@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Data Guru | ONMAI Admin</title>
+    <title>Tambah Siswa | ONMAI Admin</title>
     
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700" rel="stylesheet">
@@ -39,12 +39,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('guru.index') }}" class="flex items-center gap-3 px-6 py-3 bg-gray-800 border-r-4 border-brand text-white transition">
+                    <a href="{{ route('guru.index') }}" class="flex items-center gap-3 px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-brand transition">
                         <i class="fas fa-user-tie w-5 text-center"></i> Data Guru
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('siswa.index') }}" class="flex items-center gap-3 px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-brand transition">
+                    <a href="{{ route('siswa.index') }}" class="flex items-center gap-3 px-6 py-3 bg-gray-800 border-r-4 border-brand text-white transition">
                         <i class="fas fa-user-graduate w-5 text-center"></i> Data Siswa
                     </a>
                 </li>
@@ -71,7 +71,7 @@
             <button id="sidebar-toggle" class="md:hidden text-gray-600 text-2xl focus:outline-none hover:text-brand transition">
                 <i class="fas fa-bars"></i>
             </button>
-            <h2 class="text-xl font-bold font-heading text-gray-800">Edit Data Guru</h2>
+            <h2 class="text-xl font-bold font-heading text-gray-800">Tambah Siswa</h2>
             <div class="flex items-center gap-4">
                 <div class="text-right hidden sm:block">
                     <span class="block text-sm font-bold text-gray-800">{{ Auth::user()->name }}</span>
@@ -86,32 +86,26 @@
             <div class="max-w-3xl mx-auto animate-[fadeIn_0.5s_ease-out]">
                 
                 <div class="mb-6">
-                    <a href="{{ route('guru.index') }}" class="inline-flex items-center gap-2 text-gray-500 hover:text-brand font-bold transition group">
-                        <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Kembali ke Daftar Guru
+                    <a href="{{ route('siswa.index') }}" class="inline-flex items-center gap-2 text-gray-500 hover:text-brand font-bold transition group">
+                        <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Kembali ke Daftar Siswa
                     </a>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-lg border-t-4 border-blue-500 overflow-hidden">
+                <div class="bg-white rounded-2xl shadow-lg border-t-4 border-brand overflow-hidden">
                     <div class="p-8">
-                        <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
-                            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
-                                <i class="fas fa-user-edit"></i>
-                            </div>
-                            <h2 class="text-2xl font-bold font-heading text-gray-800">Perbarui Data Guru</h2>
-                        </div>
+                        <h2 class="text-2xl font-bold font-heading text-gray-800 mb-6 border-b border-gray-100 pb-4">Formulir Siswa Baru</h2>
                         
-                        <form action="{{ route('guru.update', $guru->id) }}" method="POST">
+                        <form action="{{ route('siswa.store') }}" method="POST">
                             @csrf
-                            @method('PUT')
                             
                             <div class="space-y-6">
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400"><i class="fas fa-user"></i></span>
-                                        <input type="text" name="name" value="{{ old('name', $guru->name) }}" required
-                                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition shadow-sm placeholder-gray-400" 
-                                            placeholder="Nama Lengkap">
+                                        <input type="text" name="name" value="{{ old('name') }}" required
+                                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition shadow-sm placeholder-gray-400" 
+                                            placeholder="Contoh: Ahmad Rizky">
                                     </div>
                                     @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                                 </div>
@@ -120,32 +114,32 @@
                                     <label class="block text-sm font-bold text-gray-700 mb-2">Alamat Email <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400"><i class="fas fa-envelope"></i></span>
-                                        <input type="email" name="email" value="{{ old('email', $guru->email) }}" required
-                                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition shadow-sm placeholder-gray-400" 
-                                            placeholder="Email">
+                                        <input type="email" name="email" value="{{ old('email') }}" required
+                                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition shadow-sm placeholder-gray-400" 
+                                            placeholder="siswa@sekolah.com">
                                     </div>
                                     @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                                 </div>
 
-                                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Ubah Password <span class="text-gray-400 font-normal">(Opsional)</span></label>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Password <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400"><i class="fas fa-lock"></i></span>
-                                        <input type="password" name="password"
-                                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition shadow-sm placeholder-gray-400 bg-white" 
-                                            placeholder="Kosongkan jika tidak ingin mengubah password">
+                                        <input type="password" name="password" required
+                                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition shadow-sm placeholder-gray-400" 
+                                            placeholder="Minimal 6 karakter">
                                     </div>
-                                    <p class="text-xs text-gray-500 mt-2"><i class="fas fa-info-circle"></i> Hanya isi jika Anda ingin mereset password guru ini.</p>
+                                    <p class="text-xs text-gray-400 mt-1"><i class="fas fa-info-circle"></i> Password awal untuk login siswa.</p>
                                     @error('password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                                 </div>
                             </div>
 
                             <div class="mt-8 flex items-center justify-end gap-3 pt-6 border-t border-gray-100">
-                                <a href="{{ route('guru.index') }}" class="px-6 py-2.5 rounded-xl text-gray-600 font-bold hover:bg-gray-100 transition">
+                                <a href="{{ route('siswa.index') }}" class="px-6 py-2.5 rounded-xl text-gray-600 font-bold hover:bg-gray-100 transition">
                                     Batal
                                 </a>
-                                <button type="submit" class="px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold shadow-md hover:bg-blue-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex items-center gap-2">
-                                    <i class="fas fa-sync-alt"></i> Perbarui Data
+                                <button type="submit" class="px-8 py-2.5 bg-brand text-white rounded-xl font-bold shadow-md hover:bg-yellow-500 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex items-center gap-2">
+                                    <i class="fas fa-save"></i> Simpan Siswa
                                 </button>
                             </div>
 

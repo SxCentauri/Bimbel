@@ -15,6 +15,7 @@ use App\Http\Controllers\JawabanController;
 use App\Http\Controllers\HasilController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\GuruController;
+use App\Http\Controllers\Admin\SiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -145,5 +146,5 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::resource('admin/guru', GuruController::class)->names('guru');
-    
+    Route::resource('admin/siswa', SiswaController::class)->names('siswa');
 });
