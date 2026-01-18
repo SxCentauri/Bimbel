@@ -1,0 +1,1129 @@
+/* =========== Google Fonts ============ */
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+/* =============== Globals ============== */
+* {
+  font-family: "Ubuntu", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --blue: #2a2185;
+  --white: #fff;
+  --gray: #f5f5f5;
+  --black1: #222;
+  --black2: #999;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+
+/* =============== Navigation ================ */
+.navigation {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  background: var(--blue);
+  border-left: 10px solid var(--blue);
+  transition: 0.5s;
+  overflow: hidden;
+}
+.navigation.active {
+  width: 80px;
+}
+
+.navigation ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.navigation ul li {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+.navigation ul li:hover,
+.navigation ul li.hovered {
+  background-color: var(--white);
+}
+
+.navigation ul li:nth-child(1) {
+  margin-bottom: 40px;
+  pointer-events: none;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: var(--white);
+}
+.navigation ul li:hover a,
+.navigation ul li.hovered a {
+  color: var(--blue);
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  line-height: 75px;
+  text-align: center;
+}
+.navigation ul li a .icon ion-icon {
+  font-size: 1.75rem;
+}
+
+.brand {  
+    display: flex;
+    align-items: center;
+    gap: 6px; /* jarak gambar dan teks */
+}
+
+.brand .logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    margin-top: 6px;
+}
+.navigation ul li a .title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 60px;
+  line-height: 60px;
+  text-align: start;
+  white-space: nowrap;
+}
+
+/* --------- curve outside ---------- */
+.navigation ul li:hover a::before,
+.navigation ul li.hovered a::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px 35px 0 10px var(--white);
+  pointer-events: none;
+}
+.navigation ul li:hover a::after,
+.navigation ul li.hovered a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -50px;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 35px -35px 0 10px var(--white);
+  pointer-events: none;
+}
+
+/* ===================== Main ===================== */
+.main {
+  position: absolute;
+  width: calc(100% - 300px);
+  left: 300px;
+  min-height: 100vh;
+  background: var(--white);
+  transition: 0.5s;
+}
+.main.active {
+  width: calc(100% - 80px);
+  left: 80px;
+}
+.topbar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  background: #f0eddd; /* ← INI yang bikin warna muncul */
+  color: white; /* warna tulisan */
+ 
+  align-items: center;
+  padding: 0 10px;
+}
+
+.card-img {
+  width: 100%;
+  display: flex;
+  height: 3000px;      /* kecilkan tinggi gambarnya */
+  object-fit: cover;  /* biar gambar tidak gepeng */
+  border-radius: 15px;
+}
+
+.card-img-overlay{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* center vertikal */
+  align-items: center;      /* center horizontal */
+  text-align: center; 
+}
+
+
+/* Perbesar ukuran teks */
+.card-title {
+    font-size: 48px;     /* judul besar */
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 28px;     /* teks di bawahnya */
+}
+
+.card-text small {
+    font-size: 40px;     /* ukuran tulisan ONMAI */
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.mainbar{
+  width: 100%;
+  margin-top: 0px;
+  background-color: rgb(255, 255, 255);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.toggle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.search {
+  position: relative;
+  width: 400px;
+  margin: 0 10px;
+}
+
+.search label {
+  position: relative;
+  width: 100%;
+}
+
+.search label input {
+  width: 100%;
+  height: 40px;
+  border-radius: 40px;
+  padding: 5px 20px;
+  padding-left: 35px;
+  font-size: 18px;
+  outline: none;
+  border: 1px solid var(--black2);
+}
+
+.search label ion-icon {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  font-size: 1.2rem;
+}
+
+.user {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.user img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ======================= Cards ====================== */
+.cardBox {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 30px;
+}
+
+.cardBox .card {
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cardBox .card .numbers {
+  position: relative;
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: var(--blue);
+}
+
+.cardBox .card .cardName {
+  color: var(--black2);
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+.cardBox .card .iconBx {
+  font-size: 3.5rem;
+  color: var(--black2);
+}
+
+.cardBox .card:hover {
+  background: var(--blue);
+}
+.cardBox .card:hover .numbers,
+.cardBox .card:hover .cardName,
+.cardBox .card:hover .iconBx {
+  color: var(--white);
+}
+
+.cardBox .cardash {
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+.cardBox .cardash:hover {
+  background: var(--blue);
+}
+.cardBox .cardash:hover .numbers,
+.cardBox .cardash:hover .cardName,
+.cardBox .cardash:hover .iconBx {
+  color: var(--white);
+}
+
+
+/* ================== Order Details List ============== */
+.details {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 30px;
+  /* margin-top: 10px; */
+}
+
+.details .recentOrders {
+  position: relative;
+  display: grid;
+  min-height: 500px;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.details .cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.cardHeader h2 {
+  font-weight: 600;
+  color: var(--blue);
+}
+.cardHeader .btn {
+  position: relative;
+  padding: 5px 10px;
+  background: var(--blue);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+}
+
+.details table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.details table thead td {
+  font-weight: 600;
+  color: var(--white);
+ 
+}
+.details .recentOrders table tr {
+  color: var(--black1);
+  border-bottom: 1px solid rgb(245, 245, 245);
+}
+.details .recentOrders table tr:last-child {
+  border-bottom: none;
+}
+.details .recentOrders table tbody tr {
+
+  color: var(--black1);
+
+}
+.details .recentOrders table tr td {
+  padding: 10px;
+}
+.details .recentOrders table tr td:last-child {
+  text-align: end;
+}
+.details .recentOrders table tr td:nth-child(2) {
+  text-align: end;
+}
+.details .recentOrders table tr td:nth-child(3) {
+  text-align: center;
+}
+.status.delivered {
+  padding: 2px 4px;
+  background: #8de02c;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.status.pending {
+  padding: 2px 4px;
+  background: #e9b10a;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.status.return {
+  padding: 2px 4px;
+  background: #f00;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.status.inProgress {
+  padding: 2px 4px;
+  background: #1795ce;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.recentCustomers {
+  position: relative;
+  display: grid;
+  min-height: 500px;
+  padding: 20px;
+  background: var(--white);
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+.recentCustomers .imgBx {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  overflow: hidden;
+}
+.recentCustomers .imgBx img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.recentCustomers table tr td {
+  padding: 12px 10px;
+}
+.recentCustomers table tr td h4 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2rem;
+}
+.recentCustomers table tr td h4 span {
+  font-size: 14px;
+  color: var(--black2);
+}
+.recentCustomers table tr:hover {
+  background: var(--blue);
+  color: var(--white);
+}
+.recentCustomers table tr:hover td h4 span {
+  color: var(--white);
+}
+
+/* ====================== Responsive Design ========================== */
+@media (max-width: 991px) {
+  .navigation {
+    left: -300px;
+  }
+  .navigation.active {
+    width: 300px;
+    left: 0;
+  }
+  .main {
+    width: 100%;
+    left: 0;
+  }
+  .main.active {
+    left: 300px;
+  }
+  .cardBox {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .details {
+    grid-template-columns: 1fr;
+  }
+  .recentOrders {
+    overflow-x: auto;
+  }
+  .status.inProgress {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardBox {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .cardHeader h2 {
+    font-size: 20px;
+  }
+  .user {
+    min-width: 40px;
+  }
+  .navigation {
+    width: 100%;
+    left: -100%;
+    z-index: 1000;
+  }
+  .navigation.active {
+    width: 100%;
+    left: 0;
+  }
+  .toggle {
+    z-index: 10001;
+  }
+  .main.active .toggle {
+    color: #fff;
+    position: fixed;
+    right: 0;
+    left: initial;
+  }
+}
+
+.tambahsoal {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 30px;
+  /* margin-top: 10px; */
+}
+
+.tambahsoal .soalsoal {
+  position: relative;
+  display: grid;
+  min-height: 500px;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.tambahsoal .cardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.cardHead h2 {
+  font-weight: 600;
+  color: var(--blue);
+}
+.cardHead .btn {
+  position: relative;
+  padding: 5px 10px;
+  background: var(--blue);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+}
+/* Container form */
+.form-soal {
+    margin-top: 5px !important;     
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px !important;            /* jarak antar form dibuat rapat */
+    padding: 0 !important;
+    min-height: 400px;
+   /* <--- ubah ini */
+    padding-top: 5px;  
+}
+
+/* Form-group */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px !important;   /* jarak antar label/input lebih rapat */
+}
+
+/* Label */
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 4px !important;   /* jarak label ke input */
+    
+}
+
+/* Input, select, textarea */
+.form-group input,
+.form-group select
+{
+    padding: 10px !important;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    
+}
+.form-group textarea 
+{
+    padding: 10px !important;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    min-height: 200px;
+}
+
+/* Dua kolom (mapel & kelas) */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px !important;           /* jarak antar kolom */
+    margin-bottom: 0 !important;
+    
+}
+
+/* Supaya form naik mendekati judul (paling penting) */
+.soalsoal, 
+.tambahsoal .soalsoal {
+    padding-top: 10px !important;  
+}
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.btn-save {
+    background: #2a2185;        /* biru solid */
+    color: #fff;
+    padding: 10px 22px;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-save:hover {
+    background: #1f1964;
+}
+
+.btn-reset {
+    background: #ccc;           /* abu solid */
+    color: #000;
+    padding: 10px 22px;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-reset:hover {
+    background: #b3b3b3;
+}
+
+/*tabel ujian*/
+
+.ujian {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  margin-top: 0;
+
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 30px;
+  /* margin-top: 10px; */
+}
+
+.ujian .tabelujian {
+  position: relative;
+  display: grid;
+  min-height: 250px;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.ujian .tabelHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.tabelHead h2 {
+  font-weight: 600;
+  color: var(--blue);
+}
+.tabelHead .btn {
+  position: relative;
+  padding: 5px 10px;
+  background: var(--blue);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+}
+
+/* HEADER */
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.btn-tambah {
+  background: #2c3e50;
+  display: inline-flex;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-import {
+  background: #00c91b;
+  display: inline-flex;
+  color: #0e0b0b;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  padding: 8px 35px 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.search-box i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+/* TABLE CARD */
+.table-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #2c3e50;
+  color: #fff;
+}
+
+thead th {
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  text-align: center;
+}
+
+tbody tr:hover {
+  background: #f9f9f9;
+}
+
+/* AKSI */
+.aksi {
+  text-align: center;
+}
+
+/* Berlaku untuk <a> dan <button> */
+.aksi a,
+.aksi button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 9px;
+  border-radius: 5px;
+  font-size: 13px;
+  color: #fff;
+  text-decoration: none;   /* HILANGIN GARIS BAWAH <a> */
+  border: none;
+  cursor: pointer;
+  margin: 0 3px;
+}
+
+/* WARNA */
+.btn-add   { background: #2c3e50; }
+.btn-edit  { background: #3498db; }
+.btn-hapus { background: #e74c3c; }
+
+.aksi a:hover,
+.aksi button:hover {
+  opacity: 0.85;
+}
+
+
+
+/* PAGINATION */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.pagination button,
+.pagination span {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+
+.pagination .active {
+  background: #2c3e50;
+  color: #fff;
+  border-color: #2c3e50;
+}
+
+/* tombol kembali */
+.header-action {
+  margin: 20px;
+}
+
+.btn-back {
+  background: #2a2185;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.btn-back:hover {
+  background: #1e1a6f;
+}
+
+/* card */
+.card {
+  background: #f5f5f5;
+  margin: 20px;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* header card */
+.card-header {
+  background: #e0e0e0;
+  padding: 12px 16px;
+  font-weight: 600;
+  border-bottom: 1px solid #ccc;
+}
+
+/* body card */
+.card-body {
+  padding: 0;
+}
+
+/* tabel detail */
+
+
+.detail-table tr {
+   border-bottom: 1px solid #ddd; /* garis tipis */
+}
+
+
+.detail-table .label {
+  width: 220px;
+  font-weight: 600;
+  
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.detail-table td {
+  border: 1px solid #000;
+  padding: 10px;
+  text-align: left;
+  background: transparent;
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.detail-table td {
+  border: 1px solid #000;
+  padding: 10px;
+  text-align: left;
+  background: transparent;
+}
+.main .detail-table tr:hover {
+  background-color: transparent !important;
+}
+
+.btn-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.soal p {
+  text-align: left !important;
+}
+
+.jawaban {
+  margin-left: 20px;
+  font-size: 14px;
+  text-align: left;
+}
+.jawaban .benar {
+  color: #198754;
+  font-weight: 600;
+}
+
+/* wrapper isi */
+.content-wrapper {
+    padding: 25px;
+}
+
+/* card utama */
+.card-soal {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #fff;
+}
+
+/* header */
+.card-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* body */
+.card-body {
+    padding: 20px;
+}
+
+/* table layout */
+.soal-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 18px; /* jarak antar baris */
+}
+
+/* kolom label kiri */
+.soal-table .label {
+    width: 120px;
+    vertical-align: top;
+    padding-top: 10px;
+    font-size: 14px;
+    color: #374151;
+}
+
+/* container editor */
+.soal-table .editor-col {
+    width: calc(100% - 120px);
+    
+}
+
+/* CKEditor wrapper */
+.ck-editor {
+    border: 1px solid #d1d5db;
+}
+
+/* Toolbar (mirip TinyMCE) */
+.ck-toolbar {
+    background: #f9fafb !important;
+    border-bottom: 1px solid #d1d5db !important;
+    border-radius: 4px 4px 0 0 !important;
+}
+
+/* Area isi */
+.ck-editor__editable {
+    min-height: 160px;
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 0 0 4px 4px;
+    text-align: left;
+}
+
+/* Focus effect (kayak TinyMCE) */
+.ck-editor__editable:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 1px #3b82f6;
+}
+
+/* Hilangkan branding CKEditor */
+.ck-powered-by {
+    display: none !important;
+}
+
+.bttn .btn-primary {
+    background: #2a2185;        /* biru solid */
+    color: #fff;
+    padding: 10px 22px;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.bttn .btn-primary :hover {
+    background: #1f1964;
+}
+
+.no-soal {
+    width: 40px;
+    vertical-align: top;
+    font-weight: bold;
+}
+
+.soal .isi-soal p {
+    margin: 0;
+     text-align: left;
+}
+
+.jawaban {
+    margin-top: 6px;
+}
+
+.jawaban-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.jawaban-item .label {
+    min-width: 20px;
+    font-weight: bold;
+}
+
+.jawaban-item .isi p {
+    margin: 0;
+}
+
+.jawaban-item.benar {
+    background: #eaffea;
+    border-left: 4px solid #2ecc71;
+    padding: 4px 6px;
+}
+
+/* kolom label */
+
+
+/* kolom field */
+.card-soal .form-field {
+    padding: 12px 14px;
+}
+
+/* select */
+.card-soal .form-select {
+    width: 100%;          /* penuh */
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+/* hover & focus */
+.card-soal .form-select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
+}
+.btn-import {
+    cursor: pointer;
+}
