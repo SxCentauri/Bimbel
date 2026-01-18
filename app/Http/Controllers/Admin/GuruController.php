@@ -9,9 +9,20 @@ use Illuminate\Support\Facades\Hash;
 
 class GuruController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $gurus = User::where('role', 'guru')->latest()->paginate(10);
+        $search = $request->query('q');
+
+        $query = User::where('role', 'guru');
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $gurus = $query->latest()->paginate(10)->withQueryString();
         
         return view('admin.guru.index', compact('gurus'));
     }

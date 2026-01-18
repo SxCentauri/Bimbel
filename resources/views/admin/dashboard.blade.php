@@ -8,21 +8,13 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        brand: '#ffc800',
-                        dark: '#1f2937',
-                        darker: '#111827',
-                    },
-                    fontFamily: {
-                        heading: ['Montserrat', 'sans-serif'],
-                        body: ['Roboto Slab', 'serif'],
-                    }
+                    colors: { brand: '#ffc800', dark: '#1f2937', darker: '#111827' },
+                    fontFamily: { heading: ['Montserrat', 'sans-serif'], body: ['Roboto Slab', 'serif'] }
                 }
             }
         }
@@ -47,7 +39,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center gap-3 px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-brand transition">
+                    <a href="{{ route('guru.index') }}" class="flex items-center gap-3 px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-brand transition">
                         <i class="fas fa-user-tie w-5 text-center"></i> Data Guru
                     </a>
                 </li>
@@ -161,12 +153,12 @@
             <h3 class="text-lg font-bold text-gray-800 mb-4 font-heading border-l-4 border-brand pl-3">Menu Cepat</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 
-                <a href="#" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:border-brand transition group">
+                <a href="{{ route('guru.create') }}" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:border-brand transition group">
                     <div class="mb-4 w-10 h-10 bg-gray-900 text-white rounded-lg flex items-center justify-center group-hover:bg-brand group-hover:text-gray-900 transition">
                         <i class="fas fa-user-plus"></i>
                     </div>
-                    <h4 class="font-bold text-gray-800">Tambah User</h4>
-                    <p class="text-xs text-gray-500 mt-1">Daftarkan akun guru atau siswa baru.</p>
+                    <h4 class="font-bold text-gray-800">Tambah Guru</h4>
+                    <p class="text-xs text-gray-500 mt-1">Daftarkan akun pengajar baru.</p>
                 </a>
 
                 <a href="#" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:border-brand transition group">
@@ -192,7 +184,6 @@
     
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            
             const sidebar = document.getElementById('sidebar');
             const toggleBtn = document.getElementById('sidebar-toggle');
             const overlay = document.getElementById('sidebar-overlay');

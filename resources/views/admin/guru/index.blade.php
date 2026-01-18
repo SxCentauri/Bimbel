@@ -83,13 +83,27 @@
 
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-8">
             
-            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 animate-[fadeIn_0.5s_ease-out]">
-                <div class="relative w-full md:w-72">
-                    <input type="text" placeholder="Cari nama guru..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition shadow-sm">
-                    <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
+            @if(session('success'))
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded shadow-sm flex justify-between items-center animate-[fadeIn_0.5s_ease-out]">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        <p>{{ session('success') }}</p>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-green-700 hover:text-green-900"><i class="fas fa-times"></i></button>
                 </div>
+            @endif
 
-                <a href="#" class="w-full md:w-auto px-6 py-2.5 bg-brand text-white rounded-xl font-bold shadow-md hover:bg-yellow-500 transition flex items-center justify-center gap-2">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 animate-[fadeIn_0.5s_ease-out]">
+                
+                <form action="{{ route('guru.index') }}" method="GET" class="relative w-full md:w-72">
+                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama atau email..." 
+                           class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition shadow-sm">
+                    <button type="submit" class="absolute left-3 top-3.5 text-gray-400 hover:text-brand transition">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+
+                <a href="{{ route('guru.create') }}" class="w-full md:w-auto px-6 py-2.5 bg-brand text-white rounded-xl font-bold shadow-md hover:bg-yellow-500 transition flex items-center justify-center gap-2">
                     <i class="fas fa-plus"></i> Tambah Guru Baru
                 </a>
             </div>
@@ -114,7 +128,7 @@
                                 </td>
                                 <td class="p-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-xs">
+                                        <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-xs uppercase">
                                             {{ substr($guru->name, 0, 1) }}
                                         </div>
                                         <span class="font-bold text-gray-800">{{ $guru->name }}</span>
@@ -126,12 +140,14 @@
                                 </td>
                                 <td class="p-4 text-center">
                                     <div class="flex items-center justify-center gap-2">
-                                        <a href="#" class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-sm" title="Edit">
+                                        <a href="{{ route('guru.edit', $guru->id) }}" class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-sm" title="Edit Data">
                                             <i class="fas fa-edit text-xs"></i>
                                         </a>
-                                        <form action="#" method="POST" onsubmit="return confirm('Hapus guru ini?')">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center hover:bg-red-600 hover:text-white transition shadow-sm" title="Hapus">
+
+                                        <form action="{{ route('guru.destroy', $guru->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data guru {{ $guru->name }}? Tindakan ini tidak dapat dibatalkan.')">
+                                            @csrf 
+                                            @method('DELETE')
+                                            <button type="submit" class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center hover:bg-red-600 hover:text-white transition shadow-sm" title="Hapus Data">
                                                 <i class="fas fa-trash text-xs"></i>
                                             </button>
                                         </form>
@@ -143,7 +159,10 @@
                                 <td colspan="5" class="p-8 text-center text-gray-400">
                                     <div class="flex flex-col items-center">
                                         <i class="fas fa-user-slash text-4xl mb-3"></i>
-                                        <p>Belum ada data guru.</p>
+                                        <p>Belum ada data guru ditemukan.</p>
+                                        @if(request('q'))
+                                            <a href="{{ route('guru.index') }}" class="mt-2 text-brand font-bold text-sm hover:underline">Reset Pencarian</a>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
