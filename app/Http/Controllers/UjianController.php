@@ -2,85 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ujian;
-use App\Models\soal;
+use App\Models\Ujian;
+use App\Models\Hasil;
+use App\Models\Jawaban;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 
 class UjianController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        
-        $ujians = Ujian::withCount('soals')->get();
+        $ujians = Ujian::withCount('soals')->latest()->get();
         return view('ujian.index', compact('ujians'));
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Ujian $ujian)
+    public function create()
     {
-        
-        return view('ujian.create', compact('ujian'));
-    
-
+        return view('ujian.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-         Ujian::create([
-            'nama_ujian' => $request->nama_ujian,
-            'mapel' => $request->mapel,
-            'kelas' => $request->kelas,
-            'deskripsi' => $request->deskripsi,
-            'acak_soal' => $request->has('acak_soal'),
-            'acak_jawaban' => $request->has('acak_jawaban'),
-            'tampilkan_hasil' => $request->has('tampilkan_hasil'),
-            'waktu_mulai' => $request->waktu_mulai,
-            'waktu_selesai' => $request->waktu_selesai,
-        ]);
-
-        return redirect()->route('ujian.index')->with('success', 'Ujian berhasil disimpan');
-
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ujian $ujian)
-    {
-         $jumlahSoal = $ujian->soals()->count();
-         return view('ujian.show', compact('ujian', 'jumlahSoal'));
-        
-         
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ujian $ujian)
-    {
-          return view('ujian.edit', compact('ujian'));
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ujian $ujian)
-    {
-
         $request->validate([
             'nama_ujian' => 'required|string|max:255',
             'mapel' => 'required|string',
@@ -89,11 +31,45 @@ class UjianController extends Controller
             'waktu_selesai' => 'nullable|date|after:waktu_mulai',
         ]);
 
-        
-        // tentukan status ujian otomatis
-        $status = ($request->waktu_mulai && $request->waktu_selesai)
-            ? 'terjadwal'
-            : 'draft';
+        Ujian::create([
+            'nama_ujian' => $request->nama_ujian,
+            'mapel' => $request->mapel,
+            'kelas' => $request->kelas,
+            'deskripsi' => $request->deskripsi,
+            'acak_soal' => $request->has('acak_soal'),
+            'acak_jawaban' => $request->has('acak_jawaban'),
+            'tampilkan_hasil' => $request->has('tampilkan_hasil'),
+            'waktu_mulai' => $request->filled('waktu_mulai') 
+                ? Carbon::parse($request->waktu_mulai) 
+                : null,
+            'waktu_selesai' => $request->filled('waktu_selesai') 
+                ? Carbon::parse($request->waktu_selesai) 
+                : null,
+        ]);
+
+        return redirect()->route('ujian.index')->with('success', 'Ujian berhasil disimpan');
+    }
+
+    public function show(Ujian $ujian)
+    {
+        $jumlahSoal = $ujian->soals()->count();
+        return view('ujian.show', compact('ujian', 'jumlahSoal'));
+    }
+
+    public function edit(Ujian $ujian)
+    {
+        return view('ujian.edit', compact('ujian'));
+    }
+
+    public function update(Request $request, Ujian $ujian)
+    {
+        $request->validate([
+            'nama_ujian' => 'required|string|max:255',
+            'mapel' => 'required|string',
+            'kelas' => 'required|string',
+            'waktu_mulai' => 'nullable|date',
+            'waktu_selesai' => 'nullable|date|after:waktu_mulai',
+        ]);
 
         $ujian->update([
             'nama_ujian' => $request->nama_ujian,
@@ -103,31 +79,43 @@ class UjianController extends Controller
             'acak_soal' => $request->has('acak_soal'),
             'acak_jawaban' => $request->has('acak_jawaban'),
             'tampilkan_hasil' => $request->has('tampilkan_hasil'),
-                
-            'waktu_mulai' => $request->filled('waktu_mulai')
-                ? Carbon::createFromFormat('Y-m-d\TH:i', $request->waktu_mulai)
+            'waktu_mulai' => $request->filled('waktu_mulai') 
+                ? Carbon::parse($request->waktu_mulai) 
                 : null,
-
-            'waktu_selesai' => $request->filled('waktu_selesai')
-                ? Carbon::createFromFormat('Y-m-d\TH:i', $request->waktu_selesai)
+            'waktu_selesai' => $request->filled('waktu_selesai') 
+                ? Carbon::parse($request->waktu_selesai) 
                 : null,
-]);
+        ]);
 
-
-        return redirect()
-            ->route('ujian.index')
-            ->with('success', 'Ujian berhasil disimpan');
+        return redirect()->route('ujian.index')->with('success', 'Ujian berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ujian $ujian)
+    public function destroy(Ujian $ujian)
     {
-          
         $ujian->delete();
-         return redirect()->route('ujian.index')
-            ->with('success', 'Ujian dan semua soal berhasil dihapus');
+        return redirect()->route('ujian.index')->with('success', 'Ujian berhasil dihapus');
     }
 
+    public function hasil(Ujian $ujian)
+    {
+        $hasils = Hasil::with('user')
+            ->where('ujian_id', $ujian->id)
+            ->orderByDesc('skor')
+            ->get();
+
+        return view('ujian.hasil', compact('ujian', 'hasils'));
+    }
+
+    public function reset($id)
+    {
+        $hasil = Hasil::findOrFail($id);
+
+        Jawaban::where('user_id', $hasil->user_id)
+            ->where('ujian_id', $hasil->ujian_id)
+            ->delete();
+
+        $hasil->delete();
+
+        return back()->with('success', 'Ujian siswa berhasil di-reset.');
+    }
 }

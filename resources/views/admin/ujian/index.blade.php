@@ -145,7 +145,10 @@
                                         <a href="{{ route('admin.ujian.show', $ujian->id) }}" class="w-8 h-8 rounded-lg bg-green-100 text-green-600 flex items-center justify-center hover:bg-green-600 hover:text-white transition shadow-sm" title="Lihat Detail & Soal">
                                             <i class="fas fa-eye text-xs"></i>
                                         </a>
-                                        
+
+                                        <a href="{{ route('admin.ujian.hasil', $ujian->id) }}" class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center hover:bg-purple-600 hover:text-white transition shadow-sm" title="Lihat Nilai Siswa">
+                                            <i class="fas fa-poll text-xs"></i>
+                                        </a>
                                         <a href="{{ route('admin.ujian.edit', $ujian->id) }}" class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-sm" title="Edit Data Ujian">
                                             <i class="fas fa-edit text-xs"></i>
                                         </a>

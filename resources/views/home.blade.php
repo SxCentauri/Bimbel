@@ -181,9 +181,6 @@
         </div>
 
         <div class="relative container mx-auto px-4 text-center text-white z-10 pt-16">
-            <div class="inline-block px-4 py-1 mb-6 border border-brand/50 rounded-full bg-brand/10 backdrop-blur-sm">
-                <span class="text-brand font-bold uppercase text-xs sm:text-sm tracking-widest">Pusat Bimbingan Belajar Terbaik</span>
-            </div>
             <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold uppercase tracking-tight mb-6 font-heading text-white drop-shadow-2xl">
                 ON<span class="text-brands">MAI</span>
             </h1>

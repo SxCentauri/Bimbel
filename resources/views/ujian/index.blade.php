@@ -137,14 +137,22 @@
 
                         <div class="col-span-12 md:col-span-2 flex justify-start md:justify-center gap-2 mt-3 md:mt-0 border-t md:border-t-0 border-gray-100 pt-3 md:pt-0">
                             
+                            {{-- Tombol Kelola Soal --}}
                             <a href="{{ route('ujian.show', $ujian) }}" class="w-8 h-8 rounded-lg bg-green-100 text-green-600 flex items-center justify-center hover:bg-green-600 hover:text-white transition shadow-sm" title="Kelola Soal">
                                 <i class="fas fa-list-ol text-xs"></i>
                             </a>
 
+                            {{-- TOMBOL BARU: LIHAT NILAI --}}
+                            <a href="{{ route('ujian.hasil', $ujian->id) }}" class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center hover:bg-purple-600 hover:text-white transition shadow-sm" title="Lihat Nilai Siswa">
+                                <i class="fas fa-poll text-xs"></i>
+                            </a>
+
+                            {{-- Tombol Edit --}}
                             <a href="{{ route('ujian.edit', $ujian) }}" class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-sm" title="Edit Data Ujian">
                                 <i class="fas fa-edit text-xs"></i>
                             </a>
 
+                            {{-- Tombol Hapus --}}
                             <form action="{{ route('ujian.destroy', $ujian->id) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('DELETE')

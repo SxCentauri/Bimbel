@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Ujian;
 use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Auth; // Tidak perlu Auth lagi karena tidak simpan user_id
+use App\Models\Hasil;
+use App\Models\Jawaban;
 
 class UjianController extends Controller
 {
@@ -99,5 +100,28 @@ class UjianController extends Controller
         $ujian->delete();
 
         return redirect()->route('admin.ujian.index')->with('success', 'Ujian berhasil dihapus.');
+    }
+
+    public function hasil(Ujian $ujian)
+    {
+        $hasils = Hasil::with('user')
+            ->where('ujian_id', $ujian->id)
+            ->orderByDesc('skor')
+            ->get();
+
+        return view('admin.ujian.hasil', compact('ujian', 'hasils'));
+    }
+
+    public function reset($id)
+    {
+        $hasil = Hasil::findOrFail($id);
+
+        Jawaban::where('user_id', $hasil->user_id)
+            ->where('ujian_id', $hasil->ujian_id)
+            ->delete();
+
+        $hasil->delete();
+
+        return back()->with('success', 'Ujian siswa berhasil di-reset. Siswa dapat mengerjakan ulang.');
     }
 }

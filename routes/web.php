@@ -99,6 +99,8 @@ Route::middleware(['auth', 'role:guru'])->group(function () {
     // Import & Upload untuk Soal Ujian
     Route::post('/ujian/{ujian}/soal/import-excel', [SoalController::class, 'importExcel'])->name('soal.import.excel');
     Route::post('soal/upload', [SoalController::class, 'upload'])->name('soal.upload'); 
+    Route::get('/ujian/{ujian}/hasil', [UjianController::class, 'hasil'])->name('ujian.hasil');
+    Route::delete('/hasil/{id}/reset', [UjianController::class, 'reset'])->name('hasil.reset');
 });
 
 
@@ -138,4 +140,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('admin/guru', GuruController::class)->names('guru');
     Route::resource('admin/siswa', SiswaController::class)->names('siswa');
     Route::resource('admin/ujian', AdminUjianController::class)->names('admin.ujian');
+    Route::get('/admin/ujian/{ujian}/hasil', [AdminUjianController::class, 'hasil'])->name('admin.ujian.hasil');
+    Route::delete('/admin/hasil/{id}/reset', [AdminUjianController::class, 'reset'])->name('admin.hasil.reset');
 });

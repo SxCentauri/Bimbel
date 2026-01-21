@@ -10,6 +10,42 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        /* FIX TAMPILAN SOAL & GAMBAR */
+        
+        /* 1. Pastikan paragraf (teks) kembali menjadi blok agar bisa enter ke bawah */
+        .prose p {
+            display: block !important; 
+            margin-bottom: 0.8rem; /* Beri jarak antar paragraf */
+            line-height: 1.6;
+        }
+
+        /* 2. Khusus Gambar: Tetap inline agar bisa sejajar dengan teks jika di tengah kalimat */
+        .prose img, .jawaban-text img {
+            display: inline-block !important; 
+            vertical-align: middle;
+            max-width: 100%;
+            height: auto;
+            margin: 4px 2px;
+            border-radius: 4px;
+        }
+
+        /* 3. Perbaikan List jika soal menggunakan <ul> atau <ol> */
+        .prose ul, .prose ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+            list-style-position: outside;
+        }
+        .prose ul { list-style-type: disc; }
+        .prose ol { list-style-type: decimal; }
+        
+        /* 4. Jawaban */
+        .jawaban-text {
+            display: inline-block;
+            width: 100%;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 font-body text-gray-800 flex h-screen overflow-hidden relative">
 
@@ -163,22 +199,22 @@
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                                             <div class="flex gap-2 p-2 rounded border {{ $soal->jawaban_benar == 'A' ? 'bg-green-50 border-green-200' : 'border-gray-100 bg-white' }}">
                                                 <span class="font-bold {{ $soal->jawaban_benar == 'A' ? 'text-green-600' : 'text-gray-400' }}">A.</span>
-                                                <span class="{{ $soal->jawaban_benar == 'A' ? 'text-green-700 font-bold' : 'text-gray-600' }}">{!! $soal->opsi_a ?? $soal->a !!}</span>
+                                                <span class="jawaban-text {{ $soal->jawaban_benar == 'A' ? 'text-green-700 font-bold' : 'text-gray-600' }}">{!! $soal->opsi_a ?? $soal->a !!}</span>
                                                 @if($soal->jawaban_benar == 'A') <i class="fas fa-check text-green-500 ml-auto"></i> @endif
                                             </div>
                                             <div class="flex gap-2 p-2 rounded border {{ $soal->jawaban_benar == 'B' ? 'bg-green-50 border-green-200' : 'border-gray-100 bg-white' }}">
                                                 <span class="font-bold {{ $soal->jawaban_benar == 'B' ? 'text-green-600' : 'text-gray-400' }}">B.</span>
-                                                <span class="{{ $soal->jawaban_benar == 'B' ? 'text-green-700 font-bold' : 'text-gray-600' }}">{!! $soal->opsi_b ?? $soal->b !!}</span>
+                                                <span class="jawaban-text {{ $soal->jawaban_benar == 'B' ? 'text-green-700 font-bold' : 'text-gray-600' }}">{!! $soal->opsi_b ?? $soal->b !!}</span>
                                                 @if($soal->jawaban_benar == 'B') <i class="fas fa-check text-green-500 ml-auto"></i> @endif
                                             </div>
                                             <div class="flex gap-2 p-2 rounded border {{ $soal->jawaban_benar == 'C' ? 'bg-green-50 border-green-200' : 'border-gray-100 bg-white' }}">
                                                 <span class="font-bold {{ $soal->jawaban_benar == 'C' ? 'text-green-600' : 'text-gray-400' }}">C.</span>
-                                                <span class="{{ $soal->jawaban_benar == 'C' ? 'text-green-700 font-bold' : 'text-gray-600' }}">{!! $soal->opsi_c ?? $soal->c !!}</span>
+                                                <span class="jawaban-text {{ $soal->jawaban_benar == 'C' ? 'text-green-700 font-bold' : 'text-gray-600' }}">{!! $soal->opsi_c ?? $soal->c !!}</span>
                                                 @if($soal->jawaban_benar == 'C') <i class="fas fa-check text-green-500 ml-auto"></i> @endif
                                             </div>
                                             <div class="flex gap-2 p-2 rounded border {{ $soal->jawaban_benar == 'D' ? 'bg-green-50 border-green-200' : 'border-gray-100 bg-white' }}">
                                                 <span class="font-bold {{ $soal->jawaban_benar == 'D' ? 'text-green-600' : 'text-gray-400' }}">D.</span>
-                                                <span class="{{ $soal->jawaban_benar == 'D' ? 'text-green-700 font-bold' : 'text-gray-600' }}">{!! $soal->opsi_d ?? $soal->d !!}</span>
+                                                <span class="jawaban-text {{ $soal->jawaban_benar == 'D' ? 'text-green-700 font-bold' : 'text-gray-600' }}">{!! $soal->opsi_d ?? $soal->d !!}</span>
                                                 @if($soal->jawaban_benar == 'D') <i class="fas fa-check text-green-500 ml-auto"></i> @endif
                                             </div>
                                         </div>
@@ -204,6 +240,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Fix Sidebar
             const sidebar = document.getElementById('sidebar');
             const toggleBtn = document.getElementById('sidebar-toggle');
             const overlay = document.getElementById('sidebar-overlay');
@@ -224,6 +261,15 @@
             }
             if (toggleBtn) toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSidebar(); });
             if (overlay) overlay.addEventListener('click', toggleSidebar);
+
+            // Fix Image Path
+            const appUrl = "{{ url('/') }}"; 
+            document.querySelectorAll('.prose img, .jawaban-text img').forEach(img => {
+                let src = img.getAttribute('src');
+                if (src && !src.startsWith('http') && !src.startsWith('/') && !src.startsWith('data:')) {
+                    img.src = appUrl + '/' + src;
+                }
+            });
         });
     </script>
 </body>
