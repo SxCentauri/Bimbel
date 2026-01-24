@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use App\Models\soal;
-use App\Models\ujian;
+use App\Models\Soal;
+use App\Models\Ujian;
 use Illuminate\Http\Request;
 
 class SoalController extends Controller

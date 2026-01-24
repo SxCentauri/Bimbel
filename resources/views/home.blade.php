@@ -181,10 +181,13 @@
         </div>
 
         <div class="relative container mx-auto px-4 text-center text-white z-10 pt-16">
+            <div class="inline-block px-4 py-1 mb-6 border border-brand/50 rounded-full bg-brand/10 backdrop-blur-sm">
+                <span class="text-brand font-bold uppercase text-xs sm:text-sm tracking-widest">Pusat Bimbingan Belajar</span>
+            </div>
             <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold uppercase tracking-tight mb-6 font-heading text-white drop-shadow-2xl">
                 ON<span class="text-brands">MAI</span>
             </h1>
-            <p class="text-xl md:text-2xl font-light tracking-widest mb-10 text-gray-300">SARAN UNTUK BERPRESTASI</p>
+            <p class="text-xl md:text-2xl font-light tracking-widest mb-10 text-gray-300">SARANA UNTUK BERPRESTASI</p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a class="px-8 py-4 bg-brand text-white font-bold text-lg uppercase rounded-lg shadow-lg shadow-brand/40 hover-bg-brand transform hover:-translate-y-1 transition duration-300 font-heading tracking-wider" href="#services">
@@ -211,7 +214,7 @@
                     <div class="absolute top-0 right-0 w-24 h-24 bg-brand/10 rounded-bl-full rounded-tr-2xl transition-all duration-300 group-hover:bg-brand/20"></div>
                     
                     <div class="relative z-10 flex justify-center mb-6">
-                        <div class="w-28 h-28 rounded-xl bg-gray-50 flex items-center justify-center border-4 border-white shadow-md group-hover:scale-105 transition duration-300 overflow-hidden">
+                        <div class="w-56 h-56 rounded-xl bg-gray-50 flex items-center justify-center border-4 border-white shadow-md group-hover:scale-105 transition duration-300 overflow-hidden">
                              <img src="{{ asset('landing-page/assets/img/img3.png') }}" class="w-full h-full object-cover" alt="Ruang Belajar">
                         </div>
                     </div>
@@ -225,7 +228,7 @@
                     <div class="absolute top-0 right-0 w-24 h-24 bg-brand/10 rounded-bl-full rounded-tr-2xl transition-all duration-300 group-hover:bg-brand/20"></div>
                     
                     <div class="relative z-10 flex justify-center mb-6">
-                        <div class="w-28 h-28 rounded-xl bg-gray-50 flex items-center justify-center border-4 border-white shadow-md group-hover:scale-105 transition duration-300 overflow-hidden">
+                        <div class="w-56 h-56 rounded-xl bg-gray-50 flex items-center justify-center border-4 border-white shadow-md group-hover:scale-105 transition duration-300 overflow-hidden">
                              <img src="{{ asset('landing-page/assets/img/img4.png') }}" class="w-full h-full object-cover" alt="Persiapan Ujian">
                         </div>
                     </div>
@@ -239,7 +242,7 @@
                     <div class="absolute top-0 right-0 w-24 h-24 bg-brand/10 rounded-bl-full rounded-tr-2xl transition-all duration-300 group-hover:bg-brand/20"></div>
                     
                     <div class="relative z-10 flex justify-center mb-6">
-                        <div class="w-28 h-28 rounded-xl bg-gray-50 flex items-center justify-center border-4 border-white shadow-md group-hover:scale-105 transition duration-300 overflow-hidden">
+                        <div class="w-56 h-56 rounded-xl bg-gray-50 flex items-center justify-center border-4 border-white shadow-md group-hover:scale-105 transition duration-300 overflow-hidden">
                              <img src="{{ asset('landing-page/assets/img/img5.png') }}" class="w-full h-full object-cover" alt="Ruang Depan">
                         </div>
                     </div>

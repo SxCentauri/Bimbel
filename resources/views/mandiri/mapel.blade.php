@@ -9,10 +9,7 @@
     .hamburger-lines span:nth-last-child(2) { transform-origin: 0% 100%; }
 
     /* CKEditor Custom Height */
-    .ck-editor__editable_inline { min-height: 120px; }
-    
-    /* Hilangkan branding CKEditor jika mengganggu (Opsional) */
-    .ck.ck-powered-by { display: none; }
+    .ck-editor__editable_inline { min-height: 150px; }
 </style>
 
 <div class="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -65,7 +62,7 @@
                     
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Pertanyaan / Soal</label>
-                        <textarea id="editor-pertanyaan" name="pertanyaan" placeholder="Tuliskan soal di sini..."></textarea>
+                        <textarea id="editor-pertanyaan" name="pertanyaan" placeholder="Tuliskan soal di sini...">{!! old('pertanyaan') !!}</textarea>
                     </div>
 
                     <div class="border-t border-gray-100 my-6"></div>
@@ -76,27 +73,26 @@
                             
                             <div class="relative group">
                                 <span class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#ffc800] text-white font-bold flex items-center justify-center shadow-md z-10 border-2 border-white">A</span>
-                                <textarea id="editor-a" name="a" placeholder="Jawaban A"></textarea>
+                                <textarea id="editor-a" name="a" placeholder="Jawaban A">{!! old('a') !!}</textarea>
                             </div>
 
                             <div class="relative group">
                                 <span class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#ffc800] text-white font-bold flex items-center justify-center shadow-md z-10 border-2 border-white">B</span>
-                                <textarea id="editor-b" name="b" placeholder="Jawaban B"></textarea>
+                                <textarea id="editor-b" name="b" placeholder="Jawaban B">{!! old('b') !!}</textarea>
                             </div>
 
                             <div class="relative group">
                                 <span class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#ffc800] text-white font-bold flex items-center justify-center shadow-md z-10 border-2 border-white">C</span>
-                                <textarea id="editor-c" name="c" placeholder="Jawaban C"></textarea>
+                                <textarea id="editor-c" name="c" placeholder="Jawaban C">{!! old('c') !!}</textarea>
                             </div>
 
                             <div class="relative group">
                                 <span class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#ffc800] text-white font-bold flex items-center justify-center shadow-md z-10 border-2 border-white">D</span>
-                                <textarea id="editor-d" name="d" placeholder="Jawaban D"></textarea>
+                                <textarea id="editor-d" name="d" placeholder="Jawaban D">{!! old('d') !!}</textarea>
                             </div>
 
                         </div>
                     </div>
-
                 </div>
 
                 <div class="bg-gray-50 px-8 py-5 border-t border-gray-100 flex justify-end gap-3">
@@ -112,15 +108,70 @@
     </div>
 </div>
 
-<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/super-build/ckeditor.js"></script>
+
 <script>
-    // Inisialisasi Editor Tanpa Fitur Upload Gambar
+    function getCsrfToken() {
+        const meta = document.querySelector('meta[name="csrf-token"]');
+        return meta ? meta.getAttribute('content') : '';
+    }
+
     function initEditor(id) {
-        ClassicEditor
-            .create(document.querySelector('#' + id), {
-                toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'blockQuote', 'insertTable', '|', 'undo', 'redo' ]
-            })
-            .catch(error => { console.error(error); });
+        const element = document.getElementById(id);
+        if (!element) return;
+
+        CKEDITOR.ClassicEditor.create(element, {
+            // --- TOOLBAR ---
+            toolbar: {
+                items: [
+                    'heading', '|', 'bold', 'italic', 'underline', 'subscript', 'superscript', '|',
+                    'bulletedList', 'numberedList', 'blockQuote', 'insertTable', '|',
+                    'insertImage', '|', // TOMBOL UPLOAD
+                    'undo', 'redo', 'sourceEditing'
+                ],
+                shouldNotGroupWhenFull: true
+            },
+
+            // --- HTML SUPPORT ---
+            htmlSupport: {
+                allow: [{ name: /.*/, attributes: true, classes: true, styles: true }]
+            },
+
+            // --- UPLOAD CONFIG ---
+            simpleUpload: {
+                uploadUrl: "{{ route('mapel.upload') }}",
+                headers: { 'X-CSRF-TOKEN': getCsrfToken() }
+            },
+
+            // --- RESIZE CONFIG ---
+            image: {
+                resizeUnit: "%",
+                resizeOptions: [
+                    { name: 'resizeImage:original', value: null, label: 'Original' },
+                    { name: 'resizeImage:50', value: '50', label: '50%' },
+                    { name: 'resizeImage:75', value: '75', label: '75%' }
+                ],
+                toolbar: [ 'imageResize', '|', 'toggleImageCaption', 'imageTextAlternative' ]
+            },
+
+            // --- REMOVE PLUGINS (CRITICAL FOR FREE MODE) ---
+            removePlugins: [
+                'DocumentOutline', 'TableOfContents', 'Pagination', 'WProofreader', 'MathType',
+                'AIAssistant', 'CKBox', 'CKFinder', 'EasyImage', 'ExportPdf', 'ExportWord', 
+                'FormatPainter', 'ImportWord', 'MultiLevelList', 'PasteFromOfficeEnhanced', 
+                'PasteFromOffice', 'RealTimeCollaborativeComments', 'RealTimeCollaborativeTrackChanges', 
+                'RealTimeCollaborativeRevisionHistory', 'PresenceList', 'Comments', 'TrackChanges', 
+                'TrackChangesData', 'RevisionHistory', 'SlashCommand', 'Template', 'TextPartLanguage', 'Toc'
+            ]
+        })
+        .then(editor => {
+            // Set data old() if exists (untuk repopulate saat validasi gagal)
+            const oldData = element.value;
+            if(oldData) editor.setData(oldData);
+        })
+        .catch(error => {
+            console.error("Gagal init editor " + id, error);
+        });
     }
 
     document.addEventListener("DOMContentLoaded", function() {

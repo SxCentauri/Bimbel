@@ -3,11 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User; // Pastikan import Model User
 
 class Ujian extends Model
 {
-    protected $table = 'ujians'; // Opsional, untuk memastikan nama tabel
+    protected $table = 'ujians';
 
     protected $fillable = [
         'nama_ujian',

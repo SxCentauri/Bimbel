@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ujian;
 use App\Models\Hasil;
 use Illuminate\Http\Request;
 
-class UjianController extends Controller
+class GuruUjianController extends Controller
 {
     /**
-     * Menampilkan daftar ujian (Tabel Utama)
+     * Menampilkan daftar ujian (Versi Guru)
      */
     public function index(Request $request)
     {
@@ -26,11 +26,12 @@ class UjianController extends Controller
             });
         }
 
-        // Pagination 10 data per halaman
+        // Ambil data terbaru, pagination 10
         $ujians = $query->latest()->paginate(10);
         $ujians->appends(['q' => $request->q]);
 
-        return view('admin.ujian.index', compact('ujians'));
+        // Menggunakan view khusus guru
+        return view('guru.ujian.index', compact('ujians'));
     }
 
     /**
@@ -38,7 +39,7 @@ class UjianController extends Controller
      */
     public function create()
     {
-        return view('admin.ujian.create');
+        return view('guru.ujian.create');
     }
 
     /**
@@ -67,19 +68,17 @@ class UjianController extends Controller
             'tampilkan_hasil' => $request->has('tampilkan_hasil') ? 1 : 0,
         ]);
 
-        return redirect()->route('admin.ujian.index')
+        return redirect()->route('guru.ujian.index')
             ->with('success', 'Ujian berhasil dibuat!');
     }
 
     /**
-     * Lihat Detail Ujian & Daftar Soalnya
+     * Lihat Detail Ujian (Show)
      */
     public function show($id)
     {
-        // Mengambil ujian beserta soal-soalnya
         $ujian = Ujian::with('soals')->findOrFail($id);
-        
-        return view('admin.ujian.show', compact('ujian'));
+        return view('guru.ujian.show', compact('ujian'));
     }
 
     /**
@@ -88,7 +87,7 @@ class UjianController extends Controller
     public function edit($id)
     {
         $ujian = Ujian::findOrFail($id);
-        return view('admin.ujian.edit', compact('ujian'));
+        return view('guru.ujian.edit', compact('ujian'));
     }
 
     /**
@@ -119,8 +118,8 @@ class UjianController extends Controller
             'tampilkan_hasil' => $request->has('tampilkan_hasil') ? 1 : 0,
         ]);
 
-        return redirect()->route('admin.ujian.index')
-            ->with('success', 'Data ujian diperbarui!');
+        return redirect()->route('guru.ujian.index')
+            ->with('success', 'Data ujian berhasil diperbarui!');
     }
 
     /**
@@ -129,41 +128,45 @@ class UjianController extends Controller
     public function destroy($id)
     {
         $ujian = Ujian::findOrFail($id);
-        
-        // Hapus ujian (Otomatis hapus soal jika di database diset ON DELETE CASCADE)
         $ujian->delete();
 
-        return redirect()->route('admin.ujian.index')
+        return redirect()->route('guru.ujian.index')
             ->with('success', 'Ujian berhasil dihapus.');
     }
 
     /**
-     * Menampilkan Halaman Hasil / Nilai Peserta (Sesuai Route admin.ujian.hasil)
+     * Toggle Status Ujian (Aktif/Nonaktif manual jika diperlukan nanti)
+     * Untuk saat ini kita pakai toggle tampilkan_hasil saja via edit
+     */
+    public function toggle($id)
+    {
+        // Opsional: jika ingin fitur toggle cepat di index
+    }
+
+    /**
+     * Lihat Hasil Siswa (Menu Hasil)
      */
     public function hasil($id)
     {
         $ujian = Ujian::findOrFail($id);
         
-        // Ambil data hasil, relasi ke user(siswa), urutkan nilai tertinggi
-        // Pastikan Model 'Hasil' sudah ada dan berelasi
+        // Ambil hasil ujian siswa, urutkan nilai tertinggi
         $hasils = Hasil::where('ujian_id', $id)
-                    ->with('user') 
-                    ->orderBy('skor', 'desc')
+                    ->with('user')
+                    ->orderBy('nilai', 'desc')
                     ->get();
 
-        return view('admin.ujian.hasil', compact('ujian', 'hasils'));
+        return view('guru.ujian.hasil', compact('ujian', 'hasils'));
     }
 
     /**
-     * Reset / Hapus Hasil Ujian Siswa Tertentu (Sesuai Route admin.hasil.reset)
+     * Reset Hasil Siswa (Agar bisa ujian ulang)
      */
     public function reset($id)
     {
-        // Cari data hasil berdasarkan ID Hasil (Bukan ID Ujian)
         $hasil = Hasil::findOrFail($id);
-        
         $hasil->delete();
 
-        return back()->with('success', 'Nilai peserta berhasil direset. Siswa dapat mengerjakan ulang.');
+        return back()->with('success', 'Nilai siswa berhasil direset. Siswa dapat mengerjakan ulang.');
     }
 }

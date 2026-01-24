@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\siswa;
-use App\Models\ujian;
+use App\Models\Siswa;
+use App\Models\Ujian;
 use Illuminate\Http\Request;
 
 class SiswaController extends Controller

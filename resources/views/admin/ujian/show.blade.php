@@ -13,15 +13,11 @@
 
     <style>
         /* FIX TAMPILAN SOAL & GAMBAR */
-        
-        /* 1. Pastikan paragraf (teks) kembali menjadi blok agar bisa enter ke bawah */
         .prose p {
             display: block !important; 
-            margin-bottom: 0.8rem; /* Beri jarak antar paragraf */
+            margin-bottom: 0.8rem;
             line-height: 1.6;
         }
-
-        /* 2. Khusus Gambar: Tetap inline agar bisa sejajar dengan teks jika di tengah kalimat */
         .prose img, .jawaban-text img {
             display: inline-block !important; 
             vertical-align: middle;
@@ -30,8 +26,6 @@
             margin: 4px 2px;
             border-radius: 4px;
         }
-
-        /* 3. Perbaikan List jika soal menggunakan <ul> atau <ol> */
         .prose ul, .prose ol {
             margin-left: 1.5rem;
             margin-bottom: 1rem;
@@ -40,7 +34,6 @@
         .prose ul { list-style-type: disc; }
         .prose ol { list-style-type: decimal; }
         
-        /* 4. Jawaban */
         .jawaban-text {
             display: inline-block;
             width: 100%;
@@ -51,9 +44,9 @@
 
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-20 hidden transition-opacity opacity-0 lg:hidden"></div>
 
-    <aside id="sidebar" class="w-64 bg-darker text-white fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 flex flex-col shadow-2xl z-30 transition-transform duration-300 ease-in-out">
-        <div class="h-20 flex items-center justify-center border-b border-gray-800 shrink-0">
-            <a href="#" class="flex items-center gap-2 text-xl font-bold font-heading text-brand tracking-widest">
+    <aside id="sidebar" class="w-64 bg-darker text-white fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 flex flex-col shadow-2xl z-30 transition-transform duration-300 ease-in-out" style="background-color: #1a202c;">
+        <div class="h-20 flex items-center justify-center border-b border-gray-700 shrink-0">
+            <a href="#" class="flex items-center gap-2 text-xl font-bold font-heading text-yellow-400 tracking-widest">
                 <i class="fas fa-crown"></i> ADMIN
             </a>
         </div>
@@ -61,29 +54,29 @@
         <nav class="flex-1 overflow-y-auto py-4">
             <ul class="space-y-1">
                 <li>
-                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-brand transition">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-yellow-400 transition">
                         <i class="fas fa-tachometer-alt w-5 text-center"></i> Dashboard
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('guru.index') }}" class="flex items-center gap-3 px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-brand transition">
+                    <a href="{{ route('guru.index') }}" class="flex items-center gap-3 px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-yellow-400 transition">
                         <i class="fas fa-user-tie w-5 text-center"></i> Data Guru
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('siswa.index') }}" class="flex items-center gap-3 px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-brand transition">
+                    <a href="{{ route('siswa.index') }}" class="flex items-center gap-3 px-6 py-3 text-gray-400 hover:bg-gray-800 hover:text-yellow-400 transition">
                         <i class="fas fa-user-graduate w-5 text-center"></i> Data Siswa
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.ujian.index') }}" class="flex items-center gap-3 px-6 py-3 bg-gray-800 border-r-4 border-brand text-white transition">
+                    <a href="{{ route('admin.ujian.index') }}" class="flex items-center gap-3 px-6 py-3 bg-gray-800 border-r-4 border-yellow-400 text-white transition">
                         <i class="fas fa-file-alt w-5 text-center"></i> Bank Soal
                     </a>
                 </li>
             </ul>
         </nav>
         
-        <div class="p-4 border-t border-gray-800 shrink-0">
+        <div class="p-4 border-t border-gray-700 shrink-0">
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white rounded-lg transition duration-300 font-bold text-sm">
@@ -94,17 +87,17 @@
     </aside>
 
     <div class="flex-1 flex flex-col h-screen overflow-hidden w-full">
-        <header class="h-20 bg-white shadow-sm flex items-center justify-between px-4 md:px-8 border-b-4 border-brand z-10 shrink-0">
-            <button id="sidebar-toggle" class="md:hidden text-gray-600 text-2xl focus:outline-none hover:text-brand transition">
+        <header class="h-20 bg-white shadow-sm flex items-center justify-between px-4 md:px-8 border-b-4 border-yellow-400 z-10 shrink-0">
+            <button id="sidebar-toggle" class="md:hidden text-gray-600 text-2xl focus:outline-none hover:text-yellow-400 transition">
                 <i class="fas fa-bars"></i>
             </button>
             <h2 class="text-xl font-bold font-heading text-gray-800">Detail Ujian</h2>
             <div class="flex items-center gap-4">
                 <div class="text-right hidden sm:block">
                     <span class="block text-sm font-bold text-gray-800">{{ Auth::user()->name }}</span>
-                    <span class="block text-xs text-brand font-bold uppercase tracking-wider">Super Admin</span>
+                    <span class="block text-xs text-yellow-500 font-bold uppercase tracking-wider">Super Admin</span>
                 </div>
-                <img src="{{ asset('assets/imgs/customer01.jpg') }}" alt="Profile" class="w-10 h-10 rounded-full border-2 border-gray-200 shadow-sm object-cover">
+                <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=random" alt="Profile" class="w-10 h-10 rounded-full border-2 border-gray-200 shadow-sm object-cover">
             </div>
         </header>
 
@@ -112,8 +105,18 @@
             
             <div class="max-w-4xl mx-auto animate-[fadeIn_0.5s_ease-out]">
                 
+                @if(session('success'))
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded shadow-sm flex justify-between items-center animate-[fadeIn_0.5s_ease-out]">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        <p>{{ session('success') }}</p>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="text-green-700 hover:text-green-900"><i class="fas fa-times"></i></button>
+                </div>
+                @endif
+
                 <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-                    <a href="{{ route('admin.ujian.index') }}" class="inline-flex items-center gap-2 text-gray-500 hover:text-brand font-bold transition group">
+                    <a href="{{ route('admin.ujian.index') }}" class="inline-flex items-center gap-2 text-gray-500 hover:text-yellow-500 font-bold transition group">
                         <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Kembali ke Bank Soal
                     </a>
 
@@ -130,7 +133,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl shadow-lg border-t-4 border-brand overflow-hidden mb-8">
+                <div class="bg-white rounded-2xl shadow-lg border-t-4 border-yellow-400 overflow-hidden mb-8">
                     <div class="p-8 border-b border-gray-100 bg-gray-50/50">
                         <div class="flex justify-between items-start">
                             <div>
@@ -179,21 +182,40 @@
                 <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
                     <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
                         <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
-                            <i class="fas fa-list-ol text-brand"></i> Daftar Soal ({{ $ujian->soals->count() }})
+                            <i class="fas fa-list-ol text-yellow-500"></i> Daftar Soal ({{ $ujian->soals->count() }})
                         </h3>
+                        <a href="{{ route('admin.soal.create', $ujian->id) }}" class="px-4 py-2 bg-yellow-400 text-white rounded-lg font-bold hover:bg-yellow-500 shadow-sm transition text-sm flex items-center gap-2">
+                            <i class="fas fa-plus"></i> Tambah Soal
+                        </a>
                     </div>
                     
                     <div class="divide-y divide-gray-100">
                         @forelse($ujian->soals as $index => $soal)
                             <div class="p-6 hover:bg-yellow-50/20 transition group">
                                 <div class="flex gap-4">
-                                    <span class="shrink-0 w-8 h-8 flex items-center justify-center bg-gray-800 text-brand font-bold rounded-lg shadow-sm text-sm mt-1">
+                                    <span class="shrink-0 w-8 h-8 flex items-center justify-center bg-gray-800 text-yellow-400 font-bold rounded-lg shadow-sm text-sm mt-1">
                                         {{ $index + 1 }}
                                     </span>
                                     
                                     <div class="flex-1">
-                                        <div class="prose max-w-none text-gray-800 font-medium mb-4">
-                                            {!! $soal->pertanyaan !!}
+                                        <div class="flex justify-between items-start mb-4">
+                                            <div class="prose max-w-none text-gray-800 font-medium flex-1 mr-4">
+                                                {!! $soal->pertanyaan !!}
+                                            </div>
+
+                                            <div class="flex items-center gap-2 shrink-0">
+                                                <a href="{{ route('admin.soal.edit', $soal->id) }}" class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-sm" title="Edit Soal">
+                                                    <i class="fas fa-pencil-alt text-xs"></i>
+                                                </a>
+                                                
+                                                <form action="{{ route('admin.soal.destroy', $soal->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus soal nomor {{ $index + 1 }} ini?')">
+                                                    @csrf 
+                                                    @method('DELETE')
+                                                    <button type="submit" class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center hover:bg-red-600 hover:text-white transition shadow-sm" title="Hapus Soal">
+                                                        <i class="fas fa-trash text-xs"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
@@ -227,7 +249,8 @@
                                     <i class="fas fa-folder-open text-2xl"></i>
                                 </div>
                                 <h4 class="text-gray-500 font-bold">Belum Ada Soal</h4>
-                                <p class="text-gray-400 text-sm">Ujian ini belum memiliki butir soal.</p>
+                                <p class="text-gray-400 text-sm mb-4">Ujian ini belum memiliki butir soal.</p>
+                                <a href="{{ route('admin.soal.create', $ujian->id) }}" class="text-yellow-500 font-bold hover:underline">Tambah Soal Sekarang</a>
                             </div>
                         @endforelse
                     </div>

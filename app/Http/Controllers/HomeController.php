@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\home;
+use App\Models\Home;
 use App\Models\Mandiri;
 use Illuminate\Http\Request;
 

@@ -16,7 +16,8 @@ use App\Http\Controllers\HasilController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\SiswaController;
-use App\Http\Controllers\Admin\UjianController as AdminUjianController;
+use App\Http\Controllers\Admin\UjianController as AdminUjianController; // jangan di hapus
+use App\Http\Controllers\Admin\AdminSoalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,23 +81,24 @@ Route::middleware(['auth', 'role:guru'])->group(function () {
     Route::get('/mandiri/{mandiri}/mapel/{mapel}/edit', [MapelController::class, 'edit'])->name('mapel.edit');
     Route::put('/mandiri/{mandiri}/mapel/{mapel}', [MapelController::class, 'update'])->name('mapel.update');
     Route::delete('/mandiri/{mandiri}/mapel/{mapel}', [MapelController::class, 'destroy'])->name('mapel.destroy');
-    
+    Route::post('/mapel/upload-image', [MapelController::class, 'upload'])->name('mapel.upload');
     Route::post('/mandiri/{mandiri}/mapel/import', [MapelController::class, 'importExcel'])->name('mapel.import');
 
 
-    // 2. MANAJEMEN UJIAN (TRYOUT / EXAM)
+    // 2. MANAJEMEN UJIAN (TRYOUT / EXAM) Jangan di ubah
     Route::resource('ujian', UjianController::class);
     Route::post('/ujian/{ujian}/toggle', [UjianController::class, 'toggle'])->name('ujian.toggle');
 
-    // Soal Ujian
+    //Jangan di ubah
     Route::get('ujian/{ujian}/soal/create', [SoalController::class, 'create'])->name('soal.create');
     Route::post('/ujian/{ujian}/soal', [SoalController::class, 'store'])->name('soal.store');
     
+    //Jangan di ubah
     Route::get('/ujian/{ujian}/soal/{soal}/edit', [SoalController::class, 'edit'])->name('soal.edit');
     Route::put('/ujian/{ujian}/soal/{soal}', [SoalController::class, 'update'])->name('soal.update');
     Route::delete('/ujian/{ujian}/soal/{soal}', [SoalController::class, 'destroy'])->name('soal.destroy');
 
-    // Import & Upload untuk Soal Ujian
+    //Jangan di ubah
     Route::post('/ujian/{ujian}/soal/import-excel', [SoalController::class, 'importExcel'])->name('soal.import.excel');
     Route::post('soal/upload', [SoalController::class, 'upload'])->name('soal.upload'); 
     Route::get('/ujian/{ujian}/hasil', [UjianController::class, 'hasil'])->name('ujian.hasil');
@@ -139,7 +141,22 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::resource('admin/guru', GuruController::class)->names('guru');
     Route::resource('admin/siswa', SiswaController::class)->names('siswa');
-    Route::resource('admin/ujian', AdminUjianController::class)->names('admin.ujian');
-    Route::get('/admin/ujian/{ujian}/hasil', [AdminUjianController::class, 'hasil'])->name('admin.ujian.hasil');
-    Route::delete('/admin/hasil/{id}/reset', [AdminUjianController::class, 'reset'])->name('admin.hasil.reset');
+    Route::resource('admin/ujian', AdminUjianController::class)->names('admin.ujian'); //jangan di ganti
+    Route::get('/admin/ujian/{ujian}/hasil', [AdminUjianController::class, 'hasil'])->name('admin.ujian.hasil'); //jangan di ganti
+    Route::delete('/admin/hasil/{id}/reset', [AdminUjianController::class, 'reset'])->name('admin.hasil.reset'); //jangan di ganti
+
+    Route::prefix('admin')->name('admin.')->group(function() {
+        
+        // Buat & Simpan Soal (Butuh ID Ujian)
+        Route::get('ujian/{ujian}/soal/create', [AdminSoalController::class, 'create'])->name('soal.create');
+        Route::post('ujian/{ujian}/soal', [AdminSoalController::class, 'store'])->name('soal.store');
+        
+        // Edit, Update, Hapus Soal (Butuh ID Soal)
+        Route::get('soal/{soal}/edit', [AdminSoalController::class, 'edit'])->name('soal.edit');
+        Route::put('soal/{soal}', [AdminSoalController::class, 'update'])->name('soal.update');
+        Route::delete('soal/{soal}', [AdminSoalController::class, 'destroy'])->name('soal.destroy');
+
+        // Upload Gambar CKEditor (Admin)
+        Route::post('soal/upload-image', [AdminSoalController::class, 'upload'])->name('soal.upload');
+    });
 });
