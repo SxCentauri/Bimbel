@@ -5,7 +5,6 @@
 <style>
     .ck-editor__editable_inline { min-height: 150px; }
 </style>
-
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <div class="min-h-screen bg-gray-50 flex font-body text-gray-800">
@@ -29,7 +28,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center gap-3 px-6 py-3 bg-[#ffc800] text-white shadow-lg shadow-yellow-200 rounded-r-full mr-4 transition font-bold">
+                    <a href="{{ route('ujian.index') }}" class="flex items-center gap-3 px-6 py-3 bg-[#ffc800] text-white shadow-lg shadow-yellow-200 rounded-r-full mr-4 transition font-bold">
                         <i class="fas fa-file-alt w-5 text-center"></i> Ujian Sekolah
                     </a>
                 </li>
@@ -72,7 +71,7 @@
                     </a>
                 </div>
 
-                <form action="{{ route('soal.update', $soal->id) }}" method="POST">
+                <form action="{{ route('soal.update', [$ujian->id, $soal->id]) }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -179,6 +178,7 @@
                 allow: [{ name: /.*/, attributes: true, classes: true, styles: true }]
             },
             simpleUpload: {
+                // Pastikan route upload benar sesuai dengan route di web.php
                 uploadUrl: "{{ route('soal.upload') }}", 
                 headers: { 'X-CSRF-TOKEN': getCsrfToken() }
             },
@@ -191,6 +191,7 @@
                 ],
                 toolbar: [ 'imageResize', '|', 'toggleImageCaption', 'imageTextAlternative' ]
             },
+            // Menghapus plugin berbayar agar tidak muncul error lisensi
             removePlugins: [
                 'DocumentOutline', 'TableOfContents', 'Pagination', 'WProofreader', 'MathType',
                 'AIAssistant', 'CKBox', 'CKFinder', 'EasyImage', 'ExportPdf', 'ExportWord', 

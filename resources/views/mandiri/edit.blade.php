@@ -44,7 +44,7 @@
     <div class="max-w-5xl mx-auto animate-[fadeIn_0.5s_ease-out]">
         
         <div class="mb-6">
-            <a href="{{ route('mandiri.mapel', $mandiri->id) }}" class="inline-flex items-center gap-2 text-gray-500 hover:text-[#ffc800] font-bold transition">
+            <a href="{{ route('mandiri.show', $mandiri->id) }}" class="inline-flex items-center gap-2 text-gray-500 hover:text-[#ffc800] font-bold transition">
                 <i class="fas fa-arrow-left"></i> Kembali ke Daftar Soal
             </a>
         </div>

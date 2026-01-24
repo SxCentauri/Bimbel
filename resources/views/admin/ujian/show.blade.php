@@ -9,10 +9,23 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'darker': '#1a202c', // Warna sidebar admin Anda
+                    }
+                }
+            }
+        }
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        /* FIX TAMPILAN SOAL & GAMBAR */
         .prose p {
             display: block !important; 
             margin-bottom: 0.8rem;
