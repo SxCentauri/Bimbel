@@ -152,9 +152,21 @@
                                 {!! $mapel->d !!}
                             </div>
                         </div>
-
                     </div>
-                    
+                    @if($mapel->pembahasan)
+                        <div class="mt-8 p-5 rounded-xl bg-blue-50 border border-blue-100">
+                            <div class="flex items-center gap-2 mb-3">
+                                <i class="fas fa-book-open text-blue-500"></i>
+                                <span class="font-bold text-blue-700 text-sm uppercase tracking-wide">
+                                    Pembahasan
+                                </span>
+                            </div>
+
+                            <div class="prose max-w-none text-gray-700 text-sm md:text-base">
+                                {!! $mapel->pembahasan !!}
+                            </div>
+                        </div>
+                    @endif
                     <div class="mt-6 pt-4 border-t border-gray-100 flex justify-end">
                         <div class="bg-gray-100 px-4 py-2 rounded-lg text-xs font-bold text-gray-500 flex items-center gap-2">
                             <i class="fas fa-key text-gray-400"></i>

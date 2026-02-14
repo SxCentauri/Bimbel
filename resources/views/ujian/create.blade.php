@@ -100,6 +100,9 @@
                                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400"><i class="fas fa-users"></i></span>
                                         <select name="kelas" id="kelas" class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-[#ffc800] focus:ring-2 focus:ring-[#ffc800]/20 outline-none transition shadow-sm bg-white appearance-none">
                                             <option value="" disabled selected>Pilih Kelas...</option>
+                                            <option>VII</option>
+                                            <option>VIII</option>
+                                            <option>IX</option>
                                             <option>X</option>
                                             <option>XI</option>
                                             <option>XII</option>

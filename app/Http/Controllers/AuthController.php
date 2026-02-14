@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -36,7 +37,7 @@ class AuthController extends Controller
             }
 
             // 3. Default: SISWA
-            return redirect()->route('tryout.index');
+            return redirect()->route('ruang.index');
         }
 
         return back()->withErrors([
@@ -66,7 +67,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('tryout.index');
+        return redirect()->route('ruang.index');
     }
 
     public function logout(Request $request)
@@ -101,5 +102,35 @@ class AuthController extends Controller
 
         return redirect()->route('akun-guru')
             ->with('success', 'Akun guru berhasil ditambahkan.');
+    }
+
+    // ======================
+    // TAMPIL HALAMAN GANTI PASSWORD
+    // ======================
+    public function showGantiPassword()
+    {
+        return view('ganti-password');
+    }
+
+    // ======================
+    // PROSES GANTI PASSWORD
+    // ======================
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        // Cek apakah password lama sesuai
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Password lama tidak sesuai']);
+        }
+        // Update password baru
+        $user->password = Hash::make($request->password);
+
+        return redirect()->route('dashboard')->with('success', 'Password berhasil diubah.');
     }
 }

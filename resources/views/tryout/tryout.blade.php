@@ -1,6 +1,6 @@
 @extends('mandiri') 
 
-@section('title', 'Daftar Ujian Saya')
+@section('title', 'Ruang Uji Tryout')
 
 @section('content')
 
@@ -63,11 +63,15 @@
             </h2>
             <p class="text-gray-500 text-sm mt-1">Siap untuk menguji kemampuanmu hari ini?</p>
         </div>
+        
         <div class="hidden md:block">
             <span class="px-4 py-2 bg-yellow-50 text-[#ffc800] rounded-full text-xs font-bold uppercase tracking-wider border border-yellow-200">
                 <i class="fas fa-calendar-alt mr-1"></i> {{ now()->format('d F Y') }}
             </span>
         </div>
+        <a href="{{ route('ruang.show') }}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Kembali
+    </a>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

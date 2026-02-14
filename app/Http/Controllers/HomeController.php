@@ -18,6 +18,67 @@ class HomeController extends Controller
     }
 
 
+    /// About (folder about/about)
+    public function about()
+    {
+        return view('about.about');
+    }
+
+
+    /// Fasilitas (folder detail/fasilitas)    
+    public function fasilitas()
+    {
+        return view('detail.fasilitas');
+    }
+
+    /// Program
+    public function program()
+    {
+        return view('program');
+    }
+
+    /// Pengajar Detail/pengajar
+
+    public function pengajar()
+    {
+        return view('detail.pengajar');
+    }
+
+    /// Pembelajaran Detail/Pembelajaran
+
+    public function uploadVideo(Request $request)
+    {
+        $request->validate([
+            'video' => 'required|file|mimes:mp4,mov,avi,wmv|max:51200', // 50MB
+        ]);
+
+        if ($request->hasFile('video')) {
+
+            $video = $request->file('video');
+            $namaFile = time() . '_' . $video->hashName();
+
+            $video->move(
+                public_path('landing-page/assets/vid'),
+                $namaFile
+            );
+
+            return view('detail.pembelajaran', [
+                'video' => $namaFile
+            ]);
+        }
+
+        return back()->with('error', 'Video gagal diupload');
+    }
+    public function belajar()
+    {
+        return view('detail.pembelajaran');
+    }
+
+    public function baca()
+    {
+        return view('about.baca');
+    }
+
     public function lihat(Mandiri $mandiri)
     {
         $mapel = $mandiri->mapels()->orderBy('id')->get();

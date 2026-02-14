@@ -18,6 +18,8 @@ use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\UjianController as AdminUjianController; // jangan di hapus
 use App\Http\Controllers\Admin\AdminSoalController;
+use App\Http\Controllers\RuangController;
+use App\Http\Controllers\PasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +28,15 @@ use App\Http\Controllers\Admin\AdminSoalController;
 */
 
 Route::get('/', function () { return view('home'); })->name('home');
-Route::get('/soal', [HomeController::class, 'index'])->name('index.soal');
+//Route::get('/soal', [HomeController::class, 'index'])->name('index.soal');
+Route::get('/about', [HomeController::class, 'about'])->name('about.about');
+Route::get('/baca', [HomeController::class, 'baca'])->name('about.baca');
+Route::get('/fasilitas', [HomeController::class, 'fasilitas'])->name('detail.fasilitas');
+Route::get('/program', [HomeController::class, 'program'])->name('program');
+Route::get('/pengajar', [HomeController::class, 'pengajar'])->name('detail.pengajar');
+Route::get('/pembelajaran', [HomeController::class, 'belajar'])->name('detail.pembelajaran');
+Route::post('/pembelajaran/upload', [HomeController::class, 'uploadVideo'])->name('pembelajaran.upload');
+    
 
 // Halaman Statis (Opsional, jika tidak ada controller)
 Route::get('/belajar', function () { return view('belajar'); })->name('belajar');
@@ -35,7 +45,6 @@ Route::get('/belajar', function () { return view('belajar'); })->name('belajar')
 Route::resource('home', HomeController::class);
 Route::get('/mandiri/{mandiri}', [HomeController::class, 'show'])->name('index.show');
 Route::get('/mandiri/{mandiri}/lihat-soal', [HomeController::class, 'lihat'])->name('index.lihat-soal');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +60,6 @@ Route::get('/daftar', [AuthController::class, 'daftar'])->name('daftar');
 Route::post('/login', [AuthController::class, 'loginProses'])->name('loginProses');
 Route::post('/daftar', [AuthController::class, 'daftarProses'])->name('daftarProses');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -84,7 +92,6 @@ Route::middleware(['auth', 'role:guru'])->group(function () {
     Route::post('/mapel/upload-image', [MapelController::class, 'upload'])->name('mapel.upload');
     Route::post('/mandiri/{mandiri}/mapel/import', [MapelController::class, 'importExcel'])->name('mapel.import');
 
-
     // 2. MANAJEMEN UJIAN (TRYOUT / EXAM) Jangan di ubah
     Route::resource('ujian', UjianController::class);
     Route::post('/ujian/{ujian}/toggle', [UjianController::class, 'toggle'])->name('ujian.toggle');
@@ -105,13 +112,16 @@ Route::middleware(['auth', 'role:guru'])->group(function () {
     Route::delete('/hasil/{id}/reset', [UjianController::class, 'reset'])->name('hasil.reset');
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | ROLE: SISWA (Peserta Ujian)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:siswa'])->group(function () {
+    Route::get('/soal', [HomeController::class, 'index'])->name('index.soal');
+    Route::get('/ruang/show', [RuangController::class, 'show'])->name('ruang.show');
+        Route::get('/ruang/berlatih/materi', [RuangController::class, 'materi'])->name('ruang.berlatih.materi');
+    Route::get('/ruang', [RuangController::class, 'index'])->name('ruang.index');
     Route::get('/tryout', [TryoutController::class, 'index'])->name('tryout.index');
     Route::get('/tryout/{ujian}', [TryoutController::class, 'show'])->name('tryout.show');
     Route::middleware(['nocache', 'cek.ujian.selesai'])->group(function () {
@@ -129,6 +139,9 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
 
     // Reset Ujian (Opsional / Debugging)
     Route::get('/tryout/{ujian}/reset', [TryoutController::class, 'reset'])->name('tryout.reset');
+
+    Route::get('/ganti-password', [PasswordController::class, 'edit'])->name('password.edit');
+    Route::post('/ganti-password', [PasswordController::class, 'update'])->name('password.update');
 
 });
 

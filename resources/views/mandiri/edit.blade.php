@@ -90,17 +90,25 @@
                                 <span class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#ffc800] text-white font-bold flex items-center justify-center shadow-md z-10 border-2 border-white">D</span>
                                 <textarea id="editor-d" name="d">{!! $mapel->d !!}</textarea>
                             </div>
-        
                         </div>
+                    </div>
+                    <div class="mt-8">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                                    Pembahasan
+                                </label>
+
+                                <textarea id="editor-pembahasan" name="pembahasan">
+                                    {!! $mapel->pembahasan !!}
+                                </textarea>
                     </div>
 
                     <div class="mt-6">
                          <label class="block text-sm font-bold text-gray-700 mb-2">Kunci Jawaban</label>
-                         <select name="kunci_jawaban" class="border p-2 rounded w-full md:w-1/4 bg-gray-50">
-                             <option value="A" {{ $mapel->kunci_jawaban == 'A' ? 'selected' : '' }}>A</option>
-                             <option value="B" {{ $mapel->kunci_jawaban == 'B' ? 'selected' : '' }}>B</option>
-                             <option value="C" {{ $mapel->kunci_jawaban == 'C' ? 'selected' : '' }}>C</option>
-                             <option value="D" {{ $mapel->kunci_jawaban == 'D' ? 'selected' : '' }}>D</option>
+                         <select name="kunci" class="border p-2 rounded w-full md:w-1/4 bg-gray-50">
+                             <option value="A" {{ $mapel->kunci == 'A' ? 'selected' : '' }}>A</option>
+                             <option value="B" {{ $mapel->kunci == 'B' ? 'selected' : '' }}>B</option>
+                             <option value="C" {{ $mapel->kunci == 'C' ? 'selected' : '' }}>C</option>
+                             <option value="D" {{ $mapel->kunci == 'D' ? 'selected' : '' }}>D</option>
                          </select>
                     </div>
         
@@ -228,6 +236,8 @@
         initEditor('editor-b');
         initEditor('editor-c');
         initEditor('editor-d');
+        initEditor('editor-kunci');
+        initEditor('editor-pembahasan');
     });
 </script>
 

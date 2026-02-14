@@ -7,200 +7,328 @@
     <meta name="author" content="ONMAI" />
     <title>@yield('title', 'ONMAI - Pusat Bimbingan Belajar')</title>
     
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    
+
+    <link rel="icon" type="image/png" href="{{ asset('landing-page/assets/img/img1.png') }}" />
     
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800,900" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet" type="text/css" />
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+  
     <style>
-        body { font-family: 'Roboto Slab', serif; }
+        body { font-family: 'Roboto Slab', serif; overflow-x: hidden; }
         h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Montserrat', sans-serif; }
         
-        /* Utilitas Warna Brand */
-        .bg-brand { background-color: #ffc800; }
-        .text-brand { color: #ffc800; }
-        .text-brands { color: white; }
-        .border-brand { border-color: #ffc800; }
-        .hover-bg-brand:hover { background-color: #d9aa00; }
+        /* Warna Brand */
+        :root {
+            --brand-color: #ffc800;
+            --brand-dark: #d9aa00;
+        }
         
-        /* Animasi Hamburger Menu (Garis Tiga ke X) */
+        .bg-brand { background-color: var(--brand-color); }
+        .text-brand { color: var(--brand-color); }
+        .border-brand { border-color: var(--brand-color); }
+        .hover-bg-brand:hover { background-color: var(--brand-dark); }
+        .hover-text-brand:hover { color: var(--brand-color); }
+        
+        /* Preloader Styles */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #f4f5f8; /* Gray-900 */
+            z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+        .loader-content { text-align: center; }
+        .loader-logo { width: 80px; animation: pulse 1.5s infinite; }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Card Styles Enhanced */
+        .card-ref {
+            border: 1px solid #f3f4f6;
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: white;
+        }
+        .card-ref:hover {
+            border-color: var(--brand-color);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px -10px rgba(255, 200, 0, 0.15);
+        }
+
+        /* Hamburger Menu */
         .hamburger span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background-color: white;
-            margin-bottom: 5px;
-            position: relative;
-            border-radius: 3px;
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-                        opacity 0.4s ease;
+            display: block; width: 25px; height: 3px; background-color: white;
+            margin-bottom: 5px; position: relative; border-radius: 3px;
+            transition: transform 0.4s, opacity 0.4s;
         }
         .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* Animasi Dropdown Desktop */
-        .dropdown-menu {
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: all 0.3s ease-in-out;
-        }
-        .group:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
+        /* Navigation & Dropdown */
+        .dropdown-menu { opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease-in-out; }
+        .group:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        #mobile-menu { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.4s ease; }
+        #mobile-menu.open { max-height: 500px; opacity: 1; }
 
-        /* Animasi Menu Mobile */
-        #mobile-menu {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
-        }
-        #mobile-menu.open {
-            max-height: 500px; /* Nilai cukup besar untuk menampung menu */
-            opacity: 1;
-        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body id="page-top" class="bg-gray-50 text-gray-700 antialiased selection:bg-[#ffc800] selection:text-black">
+<body id="page-top" class="bg-white text-gray-700 antialiased selection:bg-[#ffc800] selection:text-black">
 
-    <nav class="fixed w-full z-50 top-0 transition-all duration-300 bg-gray-900 shadow-xl" id="mainNav">
+    <div id="preloader">
+        <div class="loader-content">
+            <img src="{{ asset('landing-page/assets/img/img1.png') }}" class="loader-logo mb-4" alt="Loading...">
+            <h2 class="text-white font-heading font-bold text-xl tracking-widest">ON<span class="text-brand">MAI</span></h2>
+        </div>
+    </div>
+
+    <nav class="fixed w-full z-50 top-0 bg-gray-900/95 backdrop-blur-md shadow-2xl border-b border-gray-800" id="mainNav">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <a class="flex items-center gap-3 text-xl font-bold font-heading tracking-wider text-white group" href="#page-top">
-                    <img src="{{ asset('landing-page/assets/img/img1.png') }}" class="h-10 w-auto transition-transform duration-300 group-hover:scale-110" alt="Logo" />
-                    <span class="text-brands">ONMAI</span>
+                    <img src="{{ asset('landing-page/assets/img/img1.png') }}" class="h-10 w-auto transition transform group-hover:rotate-12" alt="Logo" />
+                    <span>ON<span class="text-brand">MAI</span></span>
                 </a>
     
-                <div class="hidden lg:flex items-center space-x-8 uppercase text-[0.85rem] font-bold tracking-wide text-gray-300 font-heading">
-                    <a class="relative group py-2 hover:text-[#ffc800] transition duration-300" href="#services">
-                        Fasilitas
-                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#ffc800] transition-all duration-300 group-hover:w-full"></span>
+                <div class="hidden lg:flex items-center space-x-8 text-sm font-semibold tracking-wide text-gray-300 font-heading">
+                    <a class="hover:text-[#ffc800] transition duration-300 relative group" href="#page-top">
+                        Beranda <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ffc800] transition-all group-hover:w-full"></span>
                     </a>
-                    
-                    <a class="relative group py-2 hover:text-[#ffc800] transition duration-300" href="#portfolio">
-                        Program Belajar
-                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#ffc800] transition-all duration-300 group-hover:w-full"></span>
+                    <!--a class="hover:text-[#ffc800] transition duration-300 relative group" href="#services">
+                        Fasilitas <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ffc800] transition-all group-hover:w-full"></span>
+                    </a-->
+                    <a class="hover:text-[#ffc800] transition duration-300 relative group" href="{{ route('program') }}">
+                        Program <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ffc800] transition-all group-hover:w-full"></span>
                     </a>
-                    
-                    <a class="relative group py-2 hover:text-[#ffc800] transition duration-300" href="#about">
-                        Tentang
-                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-[#ffc800] transition-all duration-300 group-hover:w-full"></span>
-                    </a>
+                    <!--a class="hover:text-[#ffc800] transition duration-300 relative group" href="">
+                        Tentang <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#ffc800] transition-all group-hover:w-full"></span>
+                    </a-->
                     
                     <div class="relative group h-full flex items-center">
-                        <button class="relative flex items-center hover:text-[#ffc800] transition focus:outline-none py-6">
-                            Lainnya 
-                            <i class="fas fa-caret-down ml-1 text-xs transition-transform duration-300 group-hover:rotate-180"></i>
-                            <span class="absolute bottom-4 left-0 w-0 h-0.5 bg-[#ffc800] transition-all duration-300 group-hover:w-full"></span>
+                        <button class="flex items-center hover:text-[#ffc800] transition focus:outline-none py-6">
+                            Lainnya <i class="fas fa-caret-down ml-1 text-xs transition-transform group-hover:rotate-180"></i>
                         </button>
-                        
-                        <div class="dropdown-menu absolute right-0 top-16 w-64 bg-white rounded-lg shadow-2xl py-2 border-t-4 text-gray-800 normal-case origin-top-right z-50">
-                            
-                            <a href="#team" class="relative group flex items-center px-4 py-3 hover:bg-gray-100  transition-all duration-300">
-                                <span class="w-1 h-0 absolute left-0 top-0 transition-all duration-300 group-hover:h-full"></span> 
-                                <span class="group-hover:translate-x-2 transition-transform duration-300 font-medium">Sukses Bersama Onmai</span>
-                            </a>
-                    
-                            <a href="#contact" class="relative group flex items-center px-4 py-3 hover:bg-gray-100  transition-all duration-300">
-                                <span class="w-1 h-0  absolute left-0 top-0 transition-all duration-300 group-hover:h-full"></span>
-                                <span class="group-hover:translate-x-2 transition-transform duration-300 font-medium">Contact</span>
-                            </a>
-                    
-                            <a href="{{ route('index.soal')}}" class="relative group flex items-center px-4 py-3 hover:bg-gray-100 transition-all duration-300">
-                                <span class="w-1 h-0 absolute left-0 top-0 transition-all duration-300 group-hover:h-full"></span>
-                                <span class="group-hover:translate-x-2 transition-transform duration-300 font-medium">Soal-soal</span>
-                            </a>
-                    
-                            <div class="border-t border-gray-100 my-1"></div>
-                    
-                            <a href="https://wa.me/6285273168989" target="_blank" class="relative group flex items-center px-4 py-3 hover:bg-green-50 transition-all duration-300 text-green-600 font-bold">
-                                <i class="fab fa-whatsapp mr-2 text-xl group-hover:scale-125 transition-transform duration-300"></i>
-                                <span class="group-hover:translate-x-1 transition-transform duration-300">Hubungi Kami</span>
-                            </a>
+                        <div class="dropdown-menu absolute right-0 top-16 w-56 bg-white rounded-lg shadow-2xl py-2 border-t-4 border-brand text-gray-800 z-50">
+                            <a href="#team" class="block px-4 py-3 hover:bg-gray-50 hover:text-brand transition border-b border-gray-100">Testimoni</a>
+                            <a href="#contact" class="block px-4 py-3 hover:bg-gray-50 hover:text-brand transition">Kontak</a>
                         </div>
                     </div>
     
                     @auth
-                        <a href="{{ route('dashboard') }}" class="group relative inline-flex items-center gap-2 px-8 py-3 bg-[#ffc800] text-white font-bold rounded-full overflow-hidden shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,200,0,0.5)] active:scale-95">
-                            <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] skew-x-12 transition-transform duration-1000 group-hover:translate-x-[150%] ease-in-out"></div>
-                            <i class="fas fa-tachometer-alt text-lg transition-transform duration-300 group-hover:translate-x-1 relative z-10" aria-hidden="true"></i>
-                            <span class="relative z-10 tracking-wide">DASHBOARD</span>
+                        <a href="{{ route('dashboard') }}" class="px-6 py-2.5 bg-[#ffc800] text-gray-900 font-bold rounded-full hover:bg-white hover:text-[#ffc800] transition shadow-lg transform hover:-translate-y-1 hover:shadow-brand/50">
+                            Dashboard
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="group relative inline-flex items-center gap-2 px-8 py-3 bg-[#ffc800] text-white font-bold rounded-full overflow-hidden shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,200,0,0.5)] active:scale-95">
-                            <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] skew-x-12 transition-transform duration-1000 group-hover:translate-x-[150%] ease-in-out"></div>
-                            <i class="fa fa-sign-in text-lg transition-transform duration-300 group-hover:translate-x-1 relative z-10" aria-hidden="true"></i>
-                            <span class="relative z-10 tracking-wide">LOGIN</span>
+                        <a href="{{ route('login') }}" class="px-6 py-2.5 bg-[#ffc800] text-gray-900 font-bold rounded-full hover:bg-white hover:text-[#ffc800] transition shadow-lg transform hover:-translate-y-1 hover:shadow-brand/50">
+                            Login
                         </a>
                     @endauth
-    
                 </div>
     
                 <div class="lg:hidden flex items-center">
                     <button id="mobile-menu-btn" class="hamburger focus:outline-none p-2">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span></span><span></span><span></span>
                     </button>
                 </div>
             </div>
         </div>
     
-        <div id="mobile-menu" class="lg:hidden bg-gray-900 border-t border-gray-800 absolute w-full left-0 shadow-xl z-40">
-            <ul class="px-6 py-6 space-y-4 font-bold text-white uppercase text-sm font-heading tracking-wide">
-                <li><a class="block hover:text-brand transition-colors hover:translate-x-2 duration-200" href="#services">Fasilitas</a></li>
-                <li><a class="block hover:text-brand transition-colors hover:translate-x-2 duration-200" href="#portfolio">Program Belajar</a></li>
-                <li><a class="block hover:text-brand transition-colors hover:translate-x-2 duration-200" href="#about">About</a></li>
-                <li><a class="block hover:text-brand transition-colors hover:translate-x-2 duration-200" href="#team">Sukses Bersama</a></li>
-                <li class="border-t border-gray-700 pt-2 text-xs text-gray-400">Lainnya</li>
-                <li><a class="block hover:text-brand transition-colors hover:translate-x-2 duration-200" href="{{ route('index.soal')}}">Soal-soal</a></li>
-                <li><a class="block text-brand hover:translate-x-2 duration-200" href="https://wa.me/6285273168989"><i class="fab fa-whatsapp mr-1"></i> Hubungi Kami</a></li>
-                <li class="pt-4">
-                    @auth
-                        <a class="block w-full text-center py-3 bg-brand text-white rounded-lg hover-bg-brand shadow-lg" href="{{ route('dashboard') }}">Dashboard</a>
-                    @else
-                        <a class="block w-full text-center py-3 bg-brand text-white rounded-lg hover-bg-brand shadow-lg" href="{{ route('login') }}">Login</a>
-                    @endauth
-                </li>
+        <div id="mobile-menu" class="lg:hidden bg-gray-900 border-t border-gray-800">
+            <ul class="px-6 py-6 space-y-4 font-bold text-white uppercase text-sm font-heading">
+                 <li><a href="{{ route('home') }}" class="block hover:text-brand">Beranda</a></li>
+                <li><a href="{{ route('detail.fasilitas') }}" class="block hover:text-brand">Fasilitas</a></li>
+                <li><a href="{{ route('program') }}" class="block hover:text-brand">Program</a></li>
+                <!--li><a href="" class="block hover:text-brand">Tentang</a></li-->
+                <li><a href="https://wa.me/6283142064406" target="_blank" class="block hover:text-brand">Kontak</a></li>
             </ul>
         </div>
     </nav>
 
-    <header class="relative h-screen min-h-[600px] flex items-center justify-center bg-gray-900 overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="/landing-page/assets/img/img8.png" alt="" class="w-full h-full object-cover opacity-50 blur-[1px]" fetchpriority="high"/>
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/30"></div>
+    <header class="relative bg-gray-900 pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-screen flex items-center">
+        <div class="absolute inset-0 z-0 opacity-20">
+             <img src="/landing-page/assets/img/img8.png" alt="" class="w-full h-full object-cover grayscale scale-105 animate-pulse-slow" />
         </div>
 
-        <div class="relative container mx-auto px-4 text-center text-white z-10 pt-16">
-            <div class="inline-block px-4 py-1 mb-6 border border-brand/50 rounded-full bg-brand/10 backdrop-blur-sm">
-                <span class="text-brand font-bold uppercase text-xs sm:text-sm tracking-widest">Pusat Bimbingan Belajar</span>
-            </div>
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold uppercase tracking-tight mb-6 font-heading text-white drop-shadow-2xl">
-                ON<span class="text-brands">MAI</span>
-            </h1>
-            <p class="text-xl md:text-2xl font-light tracking-widest mb-10 text-gray-300">SARANA UNTUK BERPRESTASI</p>
-            
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a class="px-8 py-4 bg-brand text-white font-bold text-lg uppercase rounded-lg shadow-lg shadow-brand/40 hover-bg-brand transform hover:-translate-y-1 transition duration-300 font-heading tracking-wider" href="#services">
-                    Fasilitas Kami
-                </a>
-                <a class="px-8 py-4 bg-transparent border-2 border-white text-white font-bold text-lg uppercase rounded-lg hover:bg-white hover:text-gray-900 transform hover:-translate-y-1 transition duration-300 font-heading tracking-wider" href="#portfolio">
-                    Program Belajar
-                </a>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col-reverse lg:flex-row items-center gap-12">
+                
+                <div class="w-full lg:w-1/2 text-center lg:text-left" data-aos="fade-right" data-aos-duration="1000">
+                    <div class="inline-block px-4 py-1 mb-6 border border-brand/50 rounded-full bg-brand/10 backdrop-blur-sm">
+                        <span class="text-brand font-bold uppercase text-xs tracking-widest">Sarana Untuk Berprestasi</span>
+                    </div>
+                    <h1 class="text-5xl lg:text-7xl font-extrabold text-white font-heading leading-tight mb-6">
+                        Selamat Datang <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#ffc800] via-yellow-300 to-[#ffc800] animate-gradient">ONMAI</span>
+                    </h1>
+                    <p class="text-gray-300 text-lg lg:text-xl leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0 font-light">
+                        Pusat bimbingan belajar terlengkap. Kami menawarkan kurikulum terbaik untuk SD, SMP, hingga persiapan masuk PTN dengan pengajar profesional.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="{{ route('program')}}" class="px-8 py-4 bg-[#ffc800] text-black font-bold rounded-lg shadow-[0_0_20px_rgba(255,200,0,0.4)] hover:shadow-[0_0_30px_rgba(255,200,0,0.6)] hover:bg-white transition duration-300 transform hover:-translate-y-1">
+                            Program Belajar
+                        </a>
+                        <!--a href="" class="px-8 py-4 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-black transition duration-300 transform hover:-translate-y-1">
+                            Tentang Kami
+                        </a-->
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2" data-aos="fade-left" data-aos-duration="1200">
+                    <div class="relative">
+
+                        <!-- Blob background -->
+                        <div class="absolute -top-12 -right-12 w-64 h-64 bg-[#ffc800] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+                        <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-white rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
+
+                        <!-- Stacked images -->
+                        <div class="relative z-10 flex flex-col gap-8">
+
+                            <!-- Top image -->
+                            <img src="{{ asset('landing-page/assets/img/img9.jpeg') }}"
+                                alt="Siswa Belajar Atas"
+                                class="rounded-2xl shadow-2xl border-4 border-gray-800 w-full object-cover
+                                        aspect-[21/9]
+                                        transform rotate-2
+                                        hover:rotate-0 hover:scale-105
+                                        transition duration-500">
+
+                            <!-- Bottom image -->
+                            <img src="{{ asset('landing-page/assets/img/img10.jpeg') }}"
+                                alt="Siswa Belajar Bawah"
+                                class="rounded-2xl shadow-2xl border-4 border-gray-800 w-full object-cover
+                                        aspect-[21/9]
+                                        transform -rotate-2 -translate-x-6
+                                        hover:rotate-0 hover:translate-x-0 hover:scale-105
+                                        transition duration-500">
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </header>
 
-    <section class="py-24 bg-white" id="services">
+    <section class="py-24 bg-white" id="why-us">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-gray-900 font-heading mb-4">Mengapa Memilih Kami?</h2>
+                <div class="w-24 h-1.5 bg-[#ffc800] mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card-ref p-8 flex flex-col items-start h-full bg-white group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#ffc800] transition-colors duration-300 shadow-sm group-hover:shadow-lg group-hover:rotate-3">
+                        <i class="fas fa-couch text-3xl text-gray-700 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 font-heading group-hover:text-[#ffc800] transition-colors">Fasilitas yang nyaman</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                        Full AC, Free WiFi kecepatan tinggi, dan Full Furnished. Suasana belajar diset senyaman mungkin agar siswa betah.
+                    </p>
+                    <a href="{{ route('detail.fasilitas') }}" class="mt-auto text-[#ffc800] font-bold text-sm hover:underline flex items-center gap-1 group/link">
+                        Lihat Detail <i class="fas fa-arrow-right transition-transform group-hover/link:translate-x-1"></i>
+                    </a>
+                </div>
+
+                <div class="card-ref p-8 flex flex-col items-start h-full bg-white group border-t-4 border-t-[#ffc800]" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#ffc800] transition-colors duration-300 shadow-sm group-hover:shadow-lg group-hover:rotate-3">
+                        <i class="fas fa-book-reader text-3xl text-gray-700 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 font-heading group-hover:text-[#ffc800] transition-colors">Instruktur Berkualitas</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                        Didukung oleh pengajar profesional dan berpengalaman dalam mendidik siswa, serta materi ajar yang komprehensif.
+                    </p>
+                    <a href="{{ route('detail.pengajar') }}" class="mt-auto text-[#ffc800] font-bold text-sm hover:underline flex items-center gap-1 group/link">
+                        Lihat Detail <i class="fas fa-arrow-right transition-transform group-hover/link:translate-x-1"></i>
+                    </a>
+                </div>
+
+                <div class="card-ref p-8 flex flex-col items-start h-full bg-white group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#ffc800] transition-colors duration-300 shadow-sm group-hover:shadow-lg group-hover:rotate-3">
+                        <i class="fas fa-laugh-beam text-3xl text-gray-700 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3 font-heading group-hover:text-[#ffc800] transition-colors">Pembelajaran Seru</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                        Menerapkan metode interaktif dalam proses kegiatan belajar mengajar, sehingga materi mudah diterima anak.
+                    </p>
+                    <a href="{{ route('detail.pembelajaran') }}" class="mt-auto text-[#ffc800] font-bold text-sm hover:underline flex items-center gap-1 group/link">
+                        Lihat Detail <i class="fas fa-arrow-right transition-transform group-hover/link:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative py-24 bg-gray-900 text-white overflow-hidden">
+        
+        <div class="absolute top-0 left-0 w-full overflow-hidden leading-none z-10">
+            <svg class="relative block w-full h-12 md:h-20" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
+            </svg>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10 py-12">
+            <div class="text-center max-w-4xl mx-auto mb-16" data-aos="fade-down">
+                <h2 class="text-3xl md:text-4xl font-extrabold font-heading mb-6 tracking-tight">Pengajar & Bahan Ajar Berkualitas</h2>
+                <p class="text-gray-400 text-base md:text-lg leading-relaxed">
+                    ONMAI didukung oleh pengajar profesional dari universitas ternama yang memiliki pengalaman dalam mendidik siswa sejak 2013, serta materi ajar komprehensif yang disesuaikan dengan kurikulum terbaru.
+                </p>
+            </div>
+
+            <div id="stats-section" class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-gray-800" data-aos="zoom-in" data-aos-duration="1000">
+                <div class="p-6 flex flex-col items-center group">
+                    <span class="block text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 font-heading mb-2 group-hover:scale-110 transition-transform">
+                        <span class="counter" data-target="100">0</span>+
+                    </span>
+                    <span class="text-xs md:text-sm font-bold tracking-widest text-[#ffc800] uppercase mt-auto">Siswa</span>
+                </div>
+                
+                <div class="p-6 flex flex-col items-center group">
+                    <span class="block text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 font-heading mb-2 group-hover:scale-110 transition-transform">
+                        <span class="counter" data-target="10">0</span>+
+                    </span>
+                    <span class="text-xs md:text-sm font-bold tracking-widest text-[#ffc800] uppercase mt-auto">Pengajar</span>
+                </div>
+            
+                <div class="p-6 flex flex-col items-center group">
+                    <span class="block text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 font-heading mb-2 group-hover:scale-110 transition-transform">
+                        <span class="counter" data-target="100">0</span>+
+                    </span>
+                    <span class="text-xs md:text-sm font-bold tracking-widest text-[#ffc800] uppercase mt-auto">Rating Bintang 5</span>
+                </div>
+            
+                <div class="p-6 flex flex-col items-center group">
+                    <span class="block text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 font-heading mb-2 group-hover:scale-110 transition-transform">
+                        <span class="counter" data-target="4">0</span>
+                    </span>
+                    <span class="text-xs md:text-sm font-bold tracking-widest text-[#ffc800] uppercase mt-auto">Program Khusus</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180 z-10">
+            <svg class="relative block w-full h-12 md:h-20" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="#ffffff"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!--section class="py-24 bg-white" id="services">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16 max-w-3xl mx-auto">
                 <h2 class="text-4xl font-extrabold uppercase mb-4 text-gray-800 font-heading">Fasilitas <span class="text-brand">Premium</span></h2>
@@ -215,7 +343,7 @@
                     
                     <div class="relative z-10 flex justify-center mb-6">
                         <div class="w-56 h-56 rounded-xl bg-gray-50 flex items-center justify-center border-4 border-white shadow-md group-hover:scale-105 transition duration-300 overflow-hidden">
-                             <img src="{{ asset('landing-page/assets/img/img3.png') }}" class="w-full h-full object-cover" alt="Ruang Belajar">
+                             <img src="" class="w-full h-full object-cover" alt="Ruang Belajar">
                         </div>
                     </div>
                     <div class="text-center relative z-10">
@@ -229,7 +357,7 @@
                     
                     <div class="relative z-10 flex justify-center mb-6">
                         <div class="w-56 h-56 rounded-xl bg-gray-50 flex items-center justify-center border-4 border-white shadow-md group-hover:scale-105 transition duration-300 overflow-hidden">
-                             <img src="{{ asset('landing-page/assets/img/img4.png') }}" class="w-full h-full object-cover" alt="Persiapan Ujian">
+                             <img src="" class="w-full h-full object-cover" alt="Persiapan Ujian">
                         </div>
                     </div>
                     <div class="text-center relative z-10">
@@ -243,7 +371,7 @@
                     
                     <div class="relative z-10 flex justify-center mb-6">
                         <div class="w-56 h-56 rounded-xl bg-gray-50 flex items-center justify-center border-4 border-white shadow-md group-hover:scale-105 transition duration-300 overflow-hidden">
-                             <img src="{{ asset('landing-page/assets/img/img5.png') }}" class="w-full h-full object-cover" alt="Ruang Depan">
+                             <img src="" class="w-full h-full object-cover" alt="Ruang Depan">
                         </div>
                     </div>
                     <div class="text-center relative z-10">
@@ -253,196 +381,170 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section--->
 
-    <section class="py-24 bg-gray-50 relative" id="portfolio">
+    <!--section class="py-24 bg-gray-50 relative" id="portfolio">
         <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-5">
              <i class="fas fa-book absolute -top-10 -left-10 text-9xl"></i>
              <i class="fas fa-graduation-cap absolute bottom-10 right-10 text-9xl"></i>
         </div>
 
         <div class="container mx-auto px-4 relative z-10">
-            <div class="text-center mb-16">
+            <div class="text-center mb-16" data-aos="fade-down">
                 <h2 class="text-4xl font-extrabold uppercase mb-4 text-gray-800 font-heading">Program Belajar</h2>
                 <h3 class="text-lg text-gray-500 font-serif italic">Pilihan paket bimbingan berkualitas sesuai jenjang pendidikan</h3>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group border-t-4 border-brand">
-                    <div class="relative h-56 bg-gray-200 overflow-hidden h-full relative">
-                        <img class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500" src="{{ asset ('landing-page/assets/img/portfolio/1.png') }}" alt="SD" />
-                        <div class="absolute top-0 right-0 bg-brand text-white text-sm font-bold px-4 py-2 rounded-bl-xl shadow-md">
+                <div class="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group border-t-4 border-brand" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative h-56 bg-gray-200 overflow-hidden h-full">
+                        <img class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" src="{{ asset ('landing-page/assets/img/portfolio/1.png') }}" alt="SD" />
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+                        <div class="absolute top-0 right-0 bg-brand text-white text-sm font-bold px-4 py-2 rounded-bl-xl shadow-md z-10">
                             KELAS 1-6
                         </div>
                     </div>
                     <div class="p-6 flex-grow flex flex-col">
-                        <h4 class="text-2xl font-bold mb-4 font-heading text-center text-gray-800">Sekolah Dasar (SD)</h4>
-                        
+                        <h4 class="text-2xl font-bold mb-4 font-heading text-center text-gray-800 group-hover:text-brand transition">Sekolah Dasar (SD)</h4>
                         <div class="space-y-3 text-sm text-gray-600 flex-grow">
                             <div class="flex items-center"><i class="fas fa-check-circle text-brand mr-3"></i> Matematika & IPA</div>
                             <div class="flex items-center"><i class="fas fa-check-circle text-brand mr-3"></i> B. Inggris & B. Indonesia</div>
                             <div class="flex items-center"><i class="fas fa-check-circle text-brand mr-3"></i> PR Tuntas</div>
-                            <div class="flex items-center font-bold text-gray-800 bg-brand/10 p-2 rounded"><i class="fas fa-gift text-brand mr-3"></i> Tambahan Belajar Gratis</div>
+                            <div class="flex items-center font-bold text-gray-800 bg-brand/10 p-2 rounded mt-2"><i class="fas fa-gift text-brand mr-3"></i> Tambahan Belajar Gratis</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group border-t-4 border-brand">
-                    <div class="relative h-56 bg-gray-200 overflow-hidden h-full relative">
-                        <img class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500" src="{{ asset ('landing-page/assets/img/portfolio/2.png') }}" alt="SMP" />
-                        <div class="absolute top-0 right-0 bg-brand text-white text-sm font-bold px-4 py-2 rounded-bl-xl shadow-md">
+                <div class="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group border-t-4 border-brand" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative h-56 bg-gray-200 overflow-hidden h-full">
+                        <img class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" src="{{ asset ('landing-page/assets/img/portfolio/2.png') }}" alt="SMP" />
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+                        <div class="absolute top-0 right-0 bg-brand text-white text-sm font-bold px-4 py-2 rounded-bl-xl shadow-md z-10">
                             KELAS 7-9
                         </div>
                     </div>
                     <div class="p-6 flex-grow flex flex-col">
-                        <h4 class="text-2xl font-bold mb-4 font-heading text-center text-gray-800">Sekolah Menengah (SMP)</h4>
-                        
+                        <h4 class="text-2xl font-bold mb-4 font-heading text-center text-gray-800 group-hover:text-brand transition">Sekolah Menengah (SMP)</h4>
                         <div class="space-y-3 text-sm text-gray-600 flex-grow">
                             <div class="flex items-center"><i class="fas fa-check-circle text-brand mr-3"></i> MTK, Fisika, Biologi</div>
                             <div class="flex items-center"><i class="fas fa-check-circle text-brand mr-3"></i> B. Inggris, B. Indo, IPS</div>
                             <div class="flex items-center"><i class="fas fa-check-circle text-brand mr-3"></i> PR Tuntas & Tambahan Gratis</div>
-                            <div class="flex items-center font-bold text-gray-800 bg-brand/10 p-2 rounded"><i class="fas fa-star text-brand mr-3"></i> Kelas 9: Persiapan TKA</div>
+                            <div class="flex items-center font-bold text-gray-800 bg-brand/10 p-2 rounded mt-2"><i class="fas fa-star text-brand mr-3"></i> Kelas 9: Persiapan TKA</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group border-t-4 border-brand">
-                    <div class="relative h-56 bg-gray-200 overflow-hidden h-full relative">
+                <div class="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group border-t-4 border-brand" data-aos="fade-up" data-aos-delay="300">
+                    <div class="relative h-56 bg-gray-200 overflow-hidden h-full">
                         <img class="w-full h-full object-cover object-top transform group-hover:scale-105 transition duration-700 ease-in-out" src="{{ asset ('landing-page/assets/img/portfolio/3.png') }}" alt="SMA" />
-                        <div class="absolute top-0 right-0 bg-brand text-white text-sm font-bold px-4 py-2 rounded-bl-xl shadow-md">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+                        <div class="absolute top-0 right-0 bg-brand text-white text-sm font-bold px-4 py-2 rounded-bl-xl shadow-md z-10">
                             KELAS 10-11
                         </div>
                     </div>
                     <div class="p-6 flex-grow flex flex-col">
-                        <h4 class="text-2xl font-bold mb-4 font-heading text-center text-gray-800">SMA Reguler</h4>
-                        
+                        <h4 class="text-2xl font-bold mb-4 font-heading text-center text-gray-800 group-hover:text-brand transition">SMA Reguler</h4>
                         <div class="space-y-3 text-sm text-gray-600 flex-grow">
                             <div class="flex items-center"><i class="fas fa-check-circle text-brand mr-3"></i> MTK, Fisika, Bio, Ekonomi</div>
                             <div class="flex items-center"><i class="fas fa-check-circle text-brand mr-3"></i> B. Inggris, B. Indo, IPS</div>
                             <div class="flex items-center"><i class="fas fa-check-circle text-brand mr-3"></i> PR Tuntas & Tambahan Gratis</div>
-                            <div class="flex items-center font-bold text-gray-800 bg-brand/10 p-2 rounded"><i class="fas fa-comments text-brand mr-3"></i> Konsultasi Orang Tua</div>
+                            <div class="flex items-center font-bold text-gray-800 bg-brand/10 p-2 rounded mt-2"><i class="fas fa-comments text-brand mr-3"></i> Konsultasi Orang Tua</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group border-t-4 border-brand lg:col-span-3 lg:w-2/3 lg:mx-auto">
+                <div class="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group border-t-4 border-brand lg:col-span-3 lg:w-2/3 lg:mx-auto" data-aos="zoom-in-up" data-aos-delay="400">
                     <div class="flex flex-col md:flex-row h-full relative">
-                        <div class="md:w-1/2 relative h-56 md:h-auto bg-gray-200 overflow-hidden">
-                             <img class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500" src="{{ asset ('landing-page/assets/img/portfolio/4.png') }}" alt="SMA 12" />
+                        <div class="md:w-1/2 relative h-64 md:h-auto bg-gray-200 overflow-hidden">
+                             <img class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" src="{{ asset ('landing-page/assets/img/portfolio/4.png') }}" alt="SMA 12" />
+                             <div class="absolute inset-0 bg-gradient-to-r from-black/0 to-black/10"></div>
                         </div>
-                        <div class="p-8 md:w-1/2 flex flex-col justify-center relative"> <div class="absolute top-0 left-0 bg-brand text-white text-sm font-bold px-4 py-2 rounded-br-xl shadow-md">
-                            KELAS 12 PEJUANG PTN
-                        </div>
-                    
-                        <h4 class="text-2xl font-bold mb-2 font-heading text-gray-800">Program Akhir SMA & Alumni</h4>
-                        <p class="text-gray-500 mb-4 text-sm">Fokus total menembus PTN impian.</p>
+                        <div class="p-8 md:w-1/2 flex flex-col justify-center relative"> 
+                            <div class="absolute top-0 left-0 bg-brand text-white text-sm font-bold px-4 py-2 rounded-br-xl shadow-md">
+                                KELAS 12 PEJUANG PTN
+                            </div>
                         
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600 mb-4">
-                            <div>
-                                <h6 class="font-bold text-brand mb-1">Mata Pelajaran:</h6>
-                                <ul class="space-y-1">
-                                    <li><i class="fas fa-check text-xs mr-1 text-gray-400"></i> MTK, Fisika, Biologi</li>
-                                    <li><i class="fas fa-check text-xs mr-1 text-gray-400"></i> Ekonomi, B.Inggris, B.Indo</li>
-                                </ul>
+                            <h4 class="text-2xl font-bold mb-2 font-heading text-gray-800 mt-6 md:mt-0 group-hover:text-brand transition">Program Akhir SMA & Alumni</h4>
+                            <p class="text-gray-500 mb-6 text-sm">Fokus total menembus PTN impian.</p>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600 mb-6">
+                                <div>
+                                    <h6 class="font-bold text-brand mb-1">Mata Pelajaran:</h6>
+                                    <ul class="space-y-1">
+                                        <li><i class="fas fa-check text-xs mr-1 text-gray-400"></i> MTK, Fisika, Biologi, Kimia</li>
+                                        <li><i class="fas fa-check text-xs mr-1 text-gray-400"></i> Ekonomi, B.Inggris, B.Indo</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h6 class="font-bold text-brand mb-1">Persiapan UTBK:</h6>
+                                    <ul class="space-y-1">
+                                        <li><i class="fas fa-check text-xs mr-1 text-gray-400"></i> TPS & Literasi</li>
+                                        <li><i class="fas fa-check text-xs mr-1 text-gray-400"></i> Penalaran Matematika</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="font-bold text-brand mb-1">Persiapan UTBK:</h6>
-                                <ul class="space-y-1">
-                                    <li><i class="fas fa-check text-xs mr-1 text-gray-400"></i> TPS & Literasi</li>
-                                    <li><i class="fas fa-check text-xs mr-1 text-gray-400"></i> Penalaran Matematika</li>
-                                </ul>
+                            
+                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 border-l-4 border-l-brand">
+                                <span class="font-bold text-gray-800 text-sm block mb-2">Program Khusus Tersedia:</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-white rounded-full text-xs font-bold border shadow-sm text-gray-600">KEDINASAN</span>
+                                    <span class="px-3 py-1 bg-white rounded-full text-xs font-bold border shadow-sm text-gray-600">KEDOKTERAN (Intensif)</span>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="bg-gray-100 p-3 rounded-lg border-l-4 border-brand">
-                            <span class="font-bold text-gray-800 text-sm block mb-1">Program Khusus Tersedia:</span>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-white rounded text-xs border shadow-sm">KEDINASAN</span>
-                                <span class="px-2 py-1 bg-white rounded text-xs border shadow-sm">KEDOKTERAN (Intensif)</span>
-                            </div>
-                        </div>
-                    </div>
                     </div>
                 </div>
 
             </div>
         </div>
-    </section>
+    </section--->
 
-    <section class="py-24 bg-white overflow-hidden" id="about">
+    <section class="py-24 bg-white" id="team">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-20">
-                <h2 class="text-4xl font-extrabold uppercase mb-4 text-gray-800 font-heading">Suasana Belajar</h2>
-                <h3 class="text-lg text-gray-500 font-serif italic">Belajar serius tapi santai, itulah kunci kami.</h3>
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-gray-900 font-heading mb-4">Testimoni Siswa</h2>
+                <p class="text-gray-500">Apa kata mereka yang sudah sukses bersama ONMAI</p>
             </div>
 
-            <div class="relative space-y-24 mt-16">
-                <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gray-100 z-0"></div>
-            
-                <div class="relative z-10 flex flex-col md:flex-row items-center gap-12">
-                    <div class="md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-12">
-                        <div class="relative w-64 h-64 md:w-72 md:h-72 rounded-full border-8 border-white shadow-2xl overflow-hidden group z-10">
-                            <img class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" src="{{ asset('landing-page/assets/img/about/3.png') }}" alt="Semangat" />
-                            <div class="absolute inset-0 bg-brand/20 opacity-0 group-hover:opacity-100 transition duration-300"></div>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="border border-gray-100 bg-white rounded-3xl p-8 relative hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="absolute -top-4 -right-4 w-12 h-12 bg-[#ffc800] rounded-full flex items-center justify-center text-white text-xl shadow-lg rotate-12 group-hover:rotate-0 transition">
+                        <i class="fas fa-quote-right"></i>
                     </div>
-                    
-                    <div class="md:w-1/2 text-center md:text-left pl-0 md:pl-12">
-                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand/10 mb-4 text-brand shadow-sm">
-                            <i class="fas fa-music text-2xl"></i>
+                    <p class="text-gray-600 mb-8 italic leading-relaxed">"Belajar di ONMAI seru banget, gurunya asik dan cara ngajarnya mudah dimengerti. Alhamdulillah saya dapat juara disekolah."</p>
+                    <div class="flex items-center gap-4 border-t border-gray-100 pt-6">
+                        <img class="w-14 h-14 rounded-full object-cover border-2 border-[#ffc800] p-1" src="{{ asset('landing-page/assets/img/about/6.jpeg') }}" alt="Rehan">
+                        <div>
+                            <h5 class="font-bold text-gray-900 text-base">DAFA</h5>
+                            <p class="text-xs font-bold text-[#ffc800] uppercase tracking-wide">SMA N 05 Kota Bengkulu</p>
                         </div>
-                        <h4 class="text-3xl font-bold font-heading mb-4 text-gray-800">Semangat & Ceria</h4>
-                        <p class="text-gray-600 text-lg leading-relaxed max-w-md mx-auto md:mx-0">
-                            Belajar sambil seru-seruan menyanyikan yel-yel. Kelas penuh dengan semangat untuk membangkitkan mood belajar sebelum materi dimulai.
-                        </p>
                     </div>
                 </div>
-            
-                <div class="relative z-10 flex flex-col md:flex-row-reverse items-center gap-12">
-                    <div class="md:w-1/2 flex justify-center md:justify-start pl-0 md:pl-12">
-                        <div class="relative w-64 h-64 md:w-72 md:h-72 rounded-full border-8 border-white shadow-2xl overflow-hidden group z-10">
-                            <img class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" src="{{ asset('landing-page/assets/img/about/4.png') }}" alt="Nyaman" />
-                            <div class="absolute inset-0 bg-brand/20 opacity-0 group-hover:opacity-100 transition duration-300"></div>
-                        </div>
+
+                <div class="border border-gray-100 bg-white rounded-3xl p-8 relative hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="absolute -top-4 -right-4 w-12 h-12 bg-[#ffc800] rounded-full flex items-center justify-center text-white text-xl shadow-lg rotate-12 group-hover:rotate-0 transition">
+                        <i class="fas fa-quote-right"></i>
                     </div>
-                    
-                    <div class="md:w-1/2 text-center md:text-right pr-0 md:pr-12"> <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand/10 mb-4 text-brand shadow-sm">
-                            <i class="fas fa-couch text-2xl"></i>
+                    <p class="text-gray-600 mb-8 italic leading-relaxed">"Suasana belajarnya nyaman, fasilitas lengkap. Sangat membantu persiapan saya dalam ujian semester."</p>
+                    <div class="flex items-center gap-4 border-t border-gray-100 pt-6">
+                        <img class="w-14 h-14 rounded-full object-cover border-2 border-[#ffc800] p-1" src="{{ asset('landing-page/assets/img/about/9.jpeg') }}" alt="Mayang">
+                        <div>
+                            <h5 class="font-bold text-gray-900 text-base">NADHILA</h5>
+                            <p class="text-xs font-bold text-[#ffc800] uppercase tracking-wide">SMA N 05 Kota Bengkulu</p>
                         </div>
-                        <h4 class="text-3xl font-bold font-heading mb-4 text-gray-800">Tenang & Nyaman</h4>
-                        <p class="text-gray-600 text-lg leading-relaxed max-w-md mx-auto md:ml-auto md:mr-0">
-                            Saat fokus dibutuhkan, kelas menjadi tempat yang tenang. Fasilitas yang nyaman mendukung konsentrasi penuh siswa.
-                        </p>
                     </div>
                 </div>
-            
-                <div class="relative z-10 flex flex-col md:flex-row items-center gap-12">
-                    <div class="md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-12">
-                        <div class="relative w-64 h-64 md:w-72 md:h-72 rounded-full border-8 border-white shadow-2xl overflow-hidden group z-10">
-                            <img class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" src="{{ asset('landing-page/assets/img/about/1.png') }}" alt="Interaktif" />
-                            <div class="absolute inset-0 bg-brand/20 opacity-0 group-hover:opacity-100 transition duration-300"></div>
-                        </div>
+
+                <div class="border border-gray-100 bg-white rounded-3xl p-8 relative hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="absolute -top-4 -right-4 w-12 h-12 bg-[#ffc800] rounded-full flex items-center justify-center text-white text-xl shadow-lg rotate-12 group-hover:rotate-0 transition">
+                        <i class="fas fa-quote-right"></i>
                     </div>
-                    
-                    <div class="md:w-1/2 text-center md:text-left pl-0 md:pl-12">
-                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand/10 mb-4 text-brand shadow-sm">
-                            <i class="fas fa-users text-2xl"></i>
-                        </div>
-                        <h4 class="text-3xl font-bold font-heading mb-4 text-gray-800">Ramai & Interaktif</h4>
-                        <p class="text-gray-600 text-lg leading-relaxed max-w-md mx-auto md:mx-0">
-                            Kelas yang ramai diskusi dan seru. Ilmu bertambah, tawa pun ikut mengalir, menghilangkan rasa bosan dan kantuk.
-                        </p>
-                    </div>
-                </div>
-            
-                <div class="relative z-10 flex justify-center pt-8 pb-10">
-                    <div class="relative group cursor-pointer">
-                        <div class="absolute inset-0 bg-brand rounded-full opacity-75 animate-ping"></div>
-                        
-                        <div class="relative w-48 h-48 bg-brand rounded-full border-8 border-white shadow-2xl flex items-center justify-center text-center p-4 transform transition duration-300 group-hover:scale-105 group-hover:rotate-3">
-                            <h4 class="text-white font-extrabold font-heading text-xl leading-tight uppercase drop-shadow-md">
-                                Be Part<br>Of Our<br>Story!
-                            </h4>
+                    <p class="text-gray-600 mb-8 italic leading-relaxed">"Recommended banget buat yang mau ngejar PTN. Tutornya care dan selalu siap bantu konsultasi."</p>
+                    <div class="flex items-center gap-4 border-t border-gray-100 pt-6">
+                        <img class="w-14 h-14 rounded-full object-cover border-2 border-[#ffc800] p-1" src="{{ asset('landing-page/assets/img/about/7.jpeg') }}" alt="Masyah">
+                        <div>
+                            <h5 class="font-bold text-gray-900 text-base">KAYLA</h5>
+                            <p class="text-xs font-bold text-[#ffc800] uppercase tracking-wide">SMA N 05 Kota Bengkulu</p>
                         </div>
                     </div>
                 </div>
@@ -450,137 +552,141 @@
         </div>
     </section>
 
-    <section class="py-24 bg-gray-50" id="team">
+    <footer class="bg-gray-50 border-t border-gray-200 pt-20 pb-10 text-sm text-gray-600">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-extrabold uppercase mb-4 text-gray-800 font-heading">Sukses Bersama ONMAI</h2>
-                <h3 class="text-lg text-gray-500 font-serif italic">Bukti nyata keberhasilan siswa kami</h3>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
-                
-                <div class="bg-white p-6 rounded-2xl shadow-lg text-center group hover:-translate-y-2 transition duration-300">
-                    <div class="w-40 h-40 mx-auto mb-6 rounded-full border-4 border-gray-100 p-1 group-hover:border-brand transition duration-300">
-                        <img class="w-full h-full rounded-full object-cover" src="{{ asset('landing-page/assets/img/team/1.png') }}" alt="" />
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-2 text-3xl font-bold text-gray-900 font-heading">
+                        <img src="{{ asset('landing-page/assets/img/img1.png') }}" class="h-10 w-auto" alt="Logo" />
+                        <span>ON<span class="text-brand">MAI</span></span>
                     </div>
-                    <h4 class="text-2xl font-bold text-gray-800 mb-1 font-heading">MAYANG</h4>
-                    <p class="text-gray-400 text-xs uppercase tracking-wide mb-4">SMAN 05 Kota Bengkulu</p>
-                    <div class="bg-brand text-white text-xs font-bold px-4 py-2 rounded-full inline-block shadow-md">
-                        LULUS HUKUM UNIB
+                    <p class="text-gray-500 leading-relaxed text-base">
+                        Partner terbaikmu meraih prestasi akademik dan menembus PTN impian.
+                    </p>
+                    <div class="flex space-x-4 pt-2">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#1877F2] hover:border-[#1877F2] transition duration-300"><i class="fab fa-facebook-f text-lg"></i></a>
+                        <a href="https://instagram.com/bimbel_onmai" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#E4405F] hover:border-[#E4405F] transition duration-300"><i class="fab fa-instagram text-lg"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#1DA1F2] hover:border-[#1DA1F2] transition duration-300"><i class="fab fa-twitter text-lg"></i></a>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl shadow-lg text-center group hover:-translate-y-2 transition duration-300">
-                    <div class="w-40 h-40 mx-auto mb-6 rounded-full border-4 border-gray-100 p-1 group-hover:border-brand transition duration-300">
-                         <img class="w-full h-full rounded-full object-cover" src="{{ asset('landing-page/assets/img/team/2.png') }}" alt="" />
-                    </div>
-                    <h4 class="text-2xl font-bold text-gray-800 mb-1 font-heading">MASYAH</h4>
-                    <p class="text-gray-400 text-xs uppercase tracking-wide mb-4">SMAN 05 Kota Bengkulu</p>
-                    <div class="bg-brand text-white text-xs font-bold px-4 py-2 rounded-full inline-block shadow-md">
-                        LULUS MANAJEMEN UNIB
-                    </div>
+                <div>
+                    <h4 class="font-bold text-gray-900 mb-6 text-lg">Program Kami</h4>
+                    <ul class="space-y-4 text-base">
+                        <li><a  class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Sekolah Dasar (SD)</a></li>
+                        <li><a  class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Sekolah Menengah (SMP)</a></li>
+                        <li><a  class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">SMA Reguler</a></li>
+                        <li><a  class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Persiapan UTBK & PTN</a></li>
+                    </ul>
                 </div>
 
-                 <div class="bg-white p-6 rounded-2xl shadow-lg text-center group hover:-translate-y-2 transition duration-300">
-                    <div class="w-40 h-40 mx-auto mb-6 rounded-full border-4 border-gray-100 p-1 group-hover:border-brand transition duration-300">
-                         <img class="w-full h-full rounded-full object-cover" src="{{ asset('landing-page/assets/img/team/4.png') }}" alt="" />
-                    </div>
-                    <h4 class="text-2xl font-bold text-gray-800 mb-1 font-heading">AISYAH</h4>
-                    <p class="text-gray-400 text-xs uppercase tracking-wide mb-4">SMAN Kehutanan Pekanbaru</p>
-                    <div class="bg-brand text-white text-xs font-bold px-4 py-2 rounded-full inline-block shadow-md">
-                        LULUS KEHUTANAN UNIB
-                    </div>
+                <div>
+                    <h4 class="font-bold text-gray-900 mb-6 text-lg">Jelajahi</h4>
+                    <ul class="space-y-4 text-base">
+                        <li><a href="" class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Tentang Kami</a></li>
+                        <li><a href="{{ route('detail.fasilitas') }}" class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Fasilitas</a></li>
+                        <li><a  class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Testimoni</a></li>
+                        <li><a  class="hover:text-[#ffc800] hover:translate-x-1 inline-block transition">Karir Pengajar</a></li>
+                    </ul>
                 </div>
 
-                 <div class="bg-white p-6 rounded-2xl shadow-lg text-center group hover:-translate-y-2 transition duration-300 lg:col-start-2">
-                    <div class="w-40 h-40 mx-auto mb-6 rounded-full border-4 border-gray-100 p-1 group-hover:border-brand transition duration-300">
-                         <img class="w-full h-full rounded-full object-cover" src="{{ asset('landing-page/assets/img/team/3.png') }}" alt="" />
-                    </div>
-                    <h4 class="text-2xl font-bold text-gray-800 mb-1 font-heading">REHAN</h4>
-                    <p class="text-gray-400 text-xs uppercase tracking-wide mb-4">SMAN 05 Kota Bengkulu</p>
-                    <div class="bg-brand text-white text-xs font-bold px-4 py-2 rounded-full inline-block shadow-md">
-                        LULUS KEDOKTERAN UNIB
-                    </div>
+                <div>
+                    <h4 class="font-bold text-gray-900 mb-6 text-lg">Hubungi Kami</h4>
+                    <ul class="space-y-6">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt text-[#ffc800] mt-1"></i>
+                            <span class="text-base">Jl. Mayjend Sutoyo No. 25 Tanah Patah, Kota Bengkulu, 55293</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-[#ffc800]"></i>
+                            <span class="text-base font-medium">onmaibimbel@gmail.com</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                             <i class="fab fa-whatsapp text-[#ffc800] text-lg"></i>
+                            <span class="text-base font-medium">083142064406</span>
+                        </li>
+                    </ul>
                 </div>
-
             </div>
-            
-            <div class="text-center mt-20">
-                <p class="text-xl md:text-3xl font-heading text-gray-700">
-                    Jadilah Bagian dari Generasi <span class="text-brand font-extrabold underline decoration-4 underline-offset-4">ONMAI</span> Selanjutnya...
-                </p>
-            </div>
-        </div>
-    </section>
 
-    <div class="py-16 bg-white border-t border-gray-100">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-center group">
-                 <img class="img-fluid block max-w-full h-auto rounded-xl shadow-2xl opacity-90 group-hover:opacity-100 transition duration-500 transform group-hover:scale-[1.01]" src="{{ asset('landing-page/assets/img/team/5.png') }}" alt="Kegiatan Onmai" />
-            </div>
-        </div>
-    </div>
-
-    <section class="py-20 bg-gray-900 text-white relative overflow-hidden" id="contact">
-        <div class="absolute top-0 left-0 w-64 h-64 bg-brand/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-        <div class="absolute bottom-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
-
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <div class="flex flex-col items-center justify-center gap-2 mb-8">
-                <img src="{{ asset('landing-page/assets/img/img1.png') }}" alt="Logo ONMAI" class="h-20 w-auto mb-2">
-                <span class="text-5xl font-extrabold font-heading tracking-wide">ON<span class="text-brand">MAI</span></span>
-            </div>
-            
-            <div class="flex flex-col md:flex-row justify-center gap-6 mb-12">
-                <a href="https://wa.me/6285273168989" target="_blank" class="group flex items-center justify-center gap-3 px-6 py-3 bg-white/10 rounded-full hover:bg-green-600 hover:text-white transition duration-300 backdrop-blur-sm border border-white/10 ">
-                    <i class="fab fa-whatsapp text-2xl text-green-400 group-hover:text-white transition-colors duration-300"></i>
-                    <span class="font-bold text-lg">+62 852 7326 8989 (Ibu Derma)</span>
+            <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-400 text-sm">&copy; 2025 ONMAI Learning Center. All rights reserved.</p>
+                <a href="https://wa.me/6283142064406" target="_blank" class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white w-14 h-14 rounded-full shadow-2xl hover:scale-110 transition duration-300 flex items-center justify-center group">
+                    <i class="fab fa-whatsapp text-3xl group-hover:rotate-12 transition"></i>
                 </a>
-                <a href="https://instagram.com/bimbel_onmai" target="_blank" class="flex items-center justify-center gap-3 px-6 py-3 bg-white/10 rounded-full hover:bg-pink-600 hover:text-white transition duration-300 backdrop-blur-sm border border-white/10">
-                    <i class="fab fa-instagram text-2xl text-pink-400"></i>
-                    <span class="font-bold text-lg">@bimbel_onmai</span>
-                </a>
-            </div>
-            
-            <div class="border-t border-gray-800 pt-8 max-w-2xl mx-auto">
-                <h4 class="text-xl font-bold mb-2 uppercase text-brand tracking-widest">Alamat Kantor Pusat</h4>
-                <p class="text-gray-400 text-lg">Jl. Mayjend Sutoyo No. 25 Tanah Patah, Kota Bengkulu</p>
-            </div>
-        </div>
-    </section>
-
-    <footer class="py-6 bg-black text-white text-sm border-t border-gray-800">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div class="text-gray-500">&copy; 2025 ONMAI. All rights reserved.</div>
-                <div class="flex gap-4">
-                    <a class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover-bg-brand text-gray-400 hover:text-white transition duration-300 transform hover:scale-110" href="#!"><i class="fab fa-instagram"></i></a>
-                    <a class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover-bg-brand text-gray-400 hover:text-white transition duration-300 transform hover:scale-110" href="#!"><i class="fa-solid fa-envelope"></i></a>
-                    <a class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover-bg-brand text-gray-400 hover:text-white transition duration-300 transform hover:scale-110" href="#!"><i class="fa-solid fa-earth-americas"></i></a>
-                </div>
             </div>
         </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out-cubic',
+                once: true,
+                offset: 50,
+            });
+    
+            const preloader = document.getElementById('preloader');
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    preloader.style.visibility = 'hidden';
+                }, 800);
+            });
+    
             const btn = document.getElementById('mobile-menu-btn');
             const menu = document.getElementById('mobile-menu');
-
-            btn.addEventListener('click', () => {
-                // 1. Toggle class 'open' di menu (untuk trigger animasi slide down)
-                menu.classList.toggle('open');
-                
-                // 2. Toggle animasi icon hamburger (tambah class 'active')
-                btn.classList.toggle('active');
-            });
-
-            // Tutup menu jika link diklik
-            menu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    menu.classList.remove('open');
-                    btn.classList.remove('active'); // Reset icon
+    
+            if (btn && menu) {
+                btn.addEventListener('click', () => {
+                    menu.classList.toggle('open');
+                    btn.classList.toggle('active');
                 });
+    
+                menu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        menu.classList.remove('open');
+                        btn.classList.remove('active');
+                    });
+                });
+            }
+    
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200;
+    
+            const animate = (counter) => {
+                const animateText = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const inc = target / speed;
+    
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        requestAnimationFrame(animateText);
+                    } else {
+                        counter.innerText = target;
+                    }
+                }
+                animateText();
+            }
+    
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        animate(counter);
+                        observer.unobserve(counter);
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+    
+            counters.forEach(counter => {
+                observer.observe(counter);
             });
         });
     </script>

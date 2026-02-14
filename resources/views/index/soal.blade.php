@@ -1,10 +1,13 @@
 @extends('mandiri')
 
-@section('title', 'Daftar Ujian - ONMAI')
+@section('title', 'Ruang Latihan - ONMAI')
 
 @section('content')
+    <a href="{{ route('ruang.index') }}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Kembali
+    </a>
     <div class="min-h-screen bg-gray-50 py-28 px-4 sm:px-6 lg:px-8">
-        
+      
         <div class="container mx-auto max-w-7xl">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 font-heading mb-4">

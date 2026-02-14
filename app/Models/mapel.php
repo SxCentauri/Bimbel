@@ -15,6 +15,9 @@ class Mapel extends Model
         'b',
         'c',
         'd',
+        'kunci',
+        'pembahasan'
+        
     ];
 
     public function mandiri()

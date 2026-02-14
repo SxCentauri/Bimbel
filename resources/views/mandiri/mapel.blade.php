@@ -90,7 +90,21 @@
                                 <span class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-[#ffc800] text-white font-bold flex items-center justify-center shadow-md z-10 border-2 border-white">D</span>
                                 <textarea id="editor-d" name="d" placeholder="Jawaban D">{!! old('d') !!}</textarea>
                             </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Kunci Jawaban</label>
 
+                                <select name="kunci" class="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#ffc800] focus:outline-none">
+                                    <option value="">-- Pilih Kunci Jawaban --</option>
+                                    <option value="A" {{ old('kunci') == 'A' ? 'selected' : '' }}>A</option>
+                                    <option value="B" {{ old('kunci') == 'B' ? 'selected' : '' }}>B</option>
+                                    <option value="C" {{ old('kunci') == 'C' ? 'selected' : '' }}>C</option>
+                                    <option value="D" {{ old('kunci') == 'D' ? 'selected' : '' }}>D</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Pembahasan</label>
+                                <textarea id="editor-pembahasan" name="pembahasan" placeholder="Tuliskan pembahasan soal...">{!! old('pembahasan') !!}</textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -180,7 +194,10 @@
         initEditor('editor-b');
         initEditor('editor-c');
         initEditor('editor-d');
+        initEditor('editor-pembahasan');
     });
+
+
 </script>
 
 @endsection

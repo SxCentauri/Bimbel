@@ -31,12 +31,15 @@ class MapelController extends Controller
      */
     public function store(Request $request, Mandiri $mandiri)
     {
+        
         $data = $request->validate([
             'pertanyaan' => 'required',
             'a' => 'required',
             'b' => 'required',
             'c' => 'required',
             'd' => 'required',
+            'kunci' => 'required',
+            'pembahasan' => 'nullable'
         ]);
 
         $mandiri->mapels()->create($data);
@@ -95,8 +98,10 @@ class MapelController extends Controller
                     'b' => strip_tags($data['b'] ?? '', $allowed_tags),
                     'c' => strip_tags($data['c'] ?? '', $allowed_tags),
                     'd' => strip_tags($data['d'] ?? '', $allowed_tags),
+                    'kunci' => $kunci,
+                    'pembahasan' => strip_tags($data['pembahasan'] ?? '', $allowed_tags)
                 ]);
-
+                   
                 $count++;
             }
 
@@ -158,6 +163,8 @@ class MapelController extends Controller
             'b' => 'required',
             'c' => 'required',
             'd' => 'required',
+            'kunci' => 'required',
+            'pembahasan' => 'nullable'
         ]);
 
         $mapel->update($data);

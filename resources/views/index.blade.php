@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Latihan Mandiri | ONMAI</title>
+    <title>Smart Arena | ONMAI</title>
+      <link rel="icon" type="image/png" href="{{ asset('landing-page/assets/img/img1.png') }}" />
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

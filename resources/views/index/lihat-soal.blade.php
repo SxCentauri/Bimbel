@@ -16,6 +16,16 @@
         margin-bottom: 0.5rem; 
         display: inline-block; /* Agar teks dan gambar bisa sejajar */
     }
+
+        .pilihan.benar {
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+        }
+        .pilihan.salah {
+            background: #fee2e2;
+            border: 2px solid #ef4444;
+        }
+
 </style>
 
 <div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6">
@@ -34,7 +44,8 @@
 
         <div class="space-y-6">
             @forelse ($mapel as $index => $soal)
-                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg 
+                    transition-shadow duration-300 soal-card"  data-kunci="{{ $soal->kunci }}">
                     
                     <div class="bg-gray-50/50 px-6 py-5 border-b border-gray-100 flex items-start gap-4">
                         <span class="shrink-0 w-8 h-8 flex items-center justify-center bg-gray-800 text-[#ffc800] font-bold rounded-lg text-sm shadow-sm">
@@ -49,34 +60,44 @@
                     <div class="p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             
-                            <div class="flex items-start gap-3 p-3 rounded-xl border border-gray-100 bg-white hover:border-[#ffc800]/50 hover:bg-yellow-50/30 transition group">
+                           <div class="pilihan flex items-start gap-3 p-3 rounded-xl border border-gray-100 bg-white hover:border-[#ffc800]/50 hover:bg-yellow-50/30 transition group cursor-pointer"
+                                data-jawaban="a">
                                 <span class="shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 text-xs font-bold group-hover:bg-[#ffc800] group-hover:text-white transition">A</span>
                                 <div class="text-sm text-gray-600 group-hover:text-gray-900 answer-content w-full">
                                     {!! $soal->a !!}
                                 </div>
                             </div>
 
-                            <div class="flex items-start gap-3 p-3 rounded-xl border border-gray-100 bg-white hover:border-[#ffc800]/50 hover:bg-yellow-50/30 transition group">
+                           <div class="pilihan flex items-start gap-3 p-3 rounded-xl border border-gray-100 bg-white hover:border-[#ffc800]/50 hover:bg-yellow-50/30 transition group cursor-pointer"
+                                data-jawaban="b">
+
                                 <span class="shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 text-xs font-bold group-hover:bg-[#ffc800] group-hover:text-white transition">B</span>
                                 <div class="text-sm text-gray-600 group-hover:text-gray-900 answer-content w-full">
                                     {!! $soal->b !!}
                                 </div>
                             </div>
 
-                            <div class="flex items-start gap-3 p-3 rounded-xl border border-gray-100 bg-white hover:border-[#ffc800]/50 hover:bg-yellow-50/30 transition group">
+                            <div class="pilihan flex items-start gap-3 p-3 rounded-xl border border-gray-100 bg-white hover:border-[#ffc800]/50 hover:bg-yellow-50/30 transition group cursor-pointer"
+                                data-jawaban="c">
                                 <span class="shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 text-xs font-bold group-hover:bg-[#ffc800] group-hover:text-white transition">C</span>
                                 <div class="text-sm text-gray-600 group-hover:text-gray-900 answer-content w-full">
                                     {!! $soal->c !!}
                                 </div>
                             </div>
 
-                            <div class="flex items-start gap-3 p-3 rounded-xl border border-gray-100 bg-white hover:border-[#ffc800]/50 hover:bg-yellow-50/30 transition group">
+                           <div class="pilihan flex items-start gap-3 p-3 rounded-xl border border-gray-100 bg-white hover:border-[#ffc800]/50 hover:bg-yellow-50/30 transition group cursor-pointer"
+                                data-jawaban="d">
                                 <span class="shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 text-xs font-bold group-hover:bg-[#ffc800] group-hover:text-white transition">D</span>
                                 <div class="text-sm text-gray-600 group-hover:text-gray-900 answer-content w-full">
                                     {!! $soal->d !!}
                                 </div>
                             </div>
-
+                            <div class="pembahasan hidden mt-4 p-4 rounded-xl bg-gray-50 border">
+                                <h4 class="font-bold text-gray-700 mb-2">Pembahasan :</h4>
+                                <div class="text-gray-600">
+                                    {!! $soal->pembahasan !!}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -91,6 +112,7 @@
 </div>
 
 <script>
+    
     document.addEventListener("DOMContentLoaded", function() {
         const appUrl = "{{ url('/') }}"; 
         
@@ -104,6 +126,60 @@
             }
         });
     });
-</script>
 
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.soal-card').forEach(card => {
+
+        const kunci = card.dataset.kunci.toLowerCase();
+        const pilihan = card.querySelectorAll('.pilihan');
+        const pembahasan = card.querySelector('.pembahasan');
+
+        pilihan.forEach(p => {
+            p.addEventListener('click', function () {
+
+                // cegah klik ulang
+                if (card.classList.contains('answered')) return;
+                card.classList.add('answered');
+
+                const jawaban = this.dataset.jawaban.toLowerCase();
+
+                pilihan.forEach(opt => {
+                    opt.classList.remove(
+                        'bg-green-100','border-green-400',
+                        'bg-red-100','border-red-400'
+                    );
+
+                    // ✅ jawaban benar → hijau
+                    if (opt.dataset.jawaban.toLowerCase() === kunci) {
+                        opt.classList.add('bg-green-100','border-green-400');
+                    }
+                });
+
+                // ❌ jawaban salah → merah
+                if (jawaban !== kunci) {
+                    this.classList.add('bg-red-100','border-red-400');
+                }
+
+                // tampilkan pembahasan
+                pembahasan.classList.remove('hidden');
+            });
+        });
+
+    });
+
+});
+
+
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global' }
+};
+
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 @endsection
